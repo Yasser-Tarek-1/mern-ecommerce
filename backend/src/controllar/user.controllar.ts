@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { User, validateUserFields } from "../models/user.model";
+import { User, UserI, validateUserFields } from "../models/user.model";
 import { hashSync, compareSync } from "bcrypt";
+import jwt from "jsonwebtoken";
 export const registerUser = async (req: Request, res: Response) => {
   const { error } = validateUserFields(req.body);
   const checkExistedEmail = await User.findOne({ email: req.body.email });
@@ -34,8 +35,21 @@ export const loginUser = async (req: Request, res: Response) => {
       error: "Invalid password",
     });
   }
-  res.status(200).send({
+  const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY as string);
+  res.header("Authentication", token).status(200).send({
     success: true,
     message: "You are logged in successfully",
+    token,
+  });
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  const updatedUser: any = await User.findByIdAndUpdate(req.params.id, {
+    ...req.body,
+  });
+  updatedUser.save();
+  res.status(200).send({
+    success: true,
+    message: "You information has been updated",
   });
 };

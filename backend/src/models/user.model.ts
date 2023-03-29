@@ -50,5 +50,5 @@ const userSchema = new Schema<UserI>({
 });
 export const User = model("user", userSchema);
 
-// userSchema.methods.genTokens = (): string =>
+// userSchema.methods.genToken = () =>
 //   jwt.sign({ _id: this._id }, process.env.SECRET_KEY as Secret);
