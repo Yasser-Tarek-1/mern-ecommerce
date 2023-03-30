@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { UserI, User } from "../models/user.model";
-export interface AuthenticatedReq extends Request {
-  user?: UserI | null;
+export interface AuthenticatedRequest extends Request {
+  user? : UserI | any;
 }
 export const checkAuth = async (
   req: Request,
@@ -12,7 +12,7 @@ export const checkAuth = async (
   const token: string | undefined = req.header("Authentication");
   if (!token) {
     return res.status(401).send({
-      error: "Un authenticated user",
+      error: "Please login first!",
     });
   }
   try {
@@ -20,7 +20,7 @@ export const checkAuth = async (
       token,
       process.env.SECRET_KEY as jwt.Secret
     );
-    (req as AuthenticatedReq).user = await User.findById(decodeToken.id);
+    (req as AuthenticatedRequest).user = await User.findById(decodeToken.id);
     next();
   } catch (error) {
     return res.status(400).send({

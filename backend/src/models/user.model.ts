@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 import joi from "joi";
 import jwt, { Secret } from "jsonwebtoken";
 export interface UserI {
+  _id: Schema.Types.ObjectId;
   email: string;
   password: string;
   username: string;

@@ -23,7 +23,7 @@ app.use("*", (_, res: Response) =>
   })
 );
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "../uploads"),
+destination: (req, file, cb) => cb(null, "../uploads"),
   filename: (req, file, cb) => {
     let fileName = `${Date.now()}_${file.originalname}`;
     cb(null, fileName);

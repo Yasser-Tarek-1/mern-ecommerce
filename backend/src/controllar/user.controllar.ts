@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { User, validateUserFields } from "../models/user.model";
 import { hashSync, compareSync } from "bcrypt";
+import { AuthenticatedRequest } from "../middleware/auth";
 import jwt from "jsonwebtoken";
 export const registerUser = async (req: Request, res: Response) => {
   const { error } = validateUserFields(req.body);
@@ -42,11 +43,22 @@ export const loginUser = async (req: Request, res: Response) => {
     token,
   });
 };
-export const updateProfile = async (req: Request, res: Response) => {
-  const updatedUser: any = await User.findByIdAndUpdate(req.params.id, {
-    ...req.body,
-  });
-  updatedUser.save();
+export const updateProfile = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  const { error } = validateUserFields(req.body);
+  if (error) {
+    return res.status(400).send({ error: error.details[0].message });
+  }
+
+  await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      ...req.body,
+    },
+    { new: true }
+  );
   res.status(200).send({
     success: true,
     message: "You information has been updated",
