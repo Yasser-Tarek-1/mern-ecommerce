@@ -1,36 +1,30 @@
+import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { Request, Response, Next } from "express";
-// export const auth = async (req: Request, res: Response, next: Next) => {
-//   const token = req.header("Authentication");
-//   if (!token) {
-//     return res.status(401).send({
-//       error: "Login first",
-//     });
-//   }
-//   try {
-//     const decodeToken = jwt.verify(token, process.env.SECRET_KEY as string);
-//     req.user = decodeToken;
-//     next();
-//   } catch (error) {
-//     res.status(400).send({
-//       error: "Inavlid token",
-//     });
-//   }
-// };
-export const auth = async (req: Request, res: Response, next: Next) => {
-  const token = req.header("Authentication");
+import { UserI, User } from "../models/user.model";
+export interface AuthenticatedReq extends Request {
+  user?: UserI | null;
+}
+export const checkAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token: string | undefined = req.header("Authentication");
   if (!token) {
     return res.status(401).send({
-      error: "Login first",
+      error: "Un authenticated user",
     });
   }
   try {
-    const decodeToken = jwt.verify(token, process.env.SECRET_KEY as string);
-    req.user = decodeToken;
+    const decodeToken: any = jwt.verify(
+      token,
+      process.env.SECRET_KEY as jwt.Secret
+    );
+    (req as AuthenticatedReq).user = await User.findById(decodeToken.id);
     next();
   } catch (error) {
     return res.status(400).send({
-      error: "Inavlid token",
+      error: "Invalid token",
     });
   }
 };

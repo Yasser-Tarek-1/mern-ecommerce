@@ -1,9 +1,13 @@
-import { loginUser, registerUser, updateProfile } from "../controllar/user.controllar";
+import {
+  loginUser,
+  registerUser,
+  updateProfile,
+} from "../controllar/user.controllar";
 import { Router } from "express";
-import { auth } from "src/middleware/auth";
+import { checkAuth } from "../middleware/auth";
 const router = Router();
 router.route("/login").post(loginUser);
 router.route("/register").post(registerUser);
-router.route("/update").post(auth,updateProfile)
+router.route("/update").post(checkAuth, updateProfile);
 
 export default router;

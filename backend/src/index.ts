@@ -7,6 +7,7 @@ import productsRoutes from "./router/product.router";
 import cartRoutes from "./router/cart.router";
 import userRoutes from "./router/user.router";
 import cors from "cors";
+import multer from "multer";
 const app = express();
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -21,6 +22,16 @@ app.use("*", (_, res: Response) =>
     error: "Un handled Route",
   })
 );
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "../uploads"),
+  filename: (req, file, cb) => {
+    let fileName = `${Date.now()}_${file.originalname}`;
+    cb(null, fileName);
+  },
+});
+const upload = multer({ storage }).single("img");
+
+
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
   CONNECTION_DB();
