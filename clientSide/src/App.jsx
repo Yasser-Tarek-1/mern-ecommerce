@@ -1,20 +1,14 @@
-import React, { useState } from "react";
-import Header from "./components/Header";
-import Banner from "./components/Banner";
-import Cart from "./components/Cart";
-import Categories from "./components/Categories";
-import Products from "./components/Products";
+import React from "react";
+import { Provider } from "react-redux";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
+import { store } from "./store";
 
 const App = () => {
-  const [showCart, setShowCart] = useState(false);
   return (
-    <>
-      <Cart showCart={showCart} onSetShowCart={setShowCart} />
-      <Header onSetShowCart={setShowCart} />
-      <Banner />
-      <Categories />
-      <Products />
-    </>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   );
 };
 

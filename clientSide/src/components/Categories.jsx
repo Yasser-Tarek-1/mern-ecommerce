@@ -22,7 +22,7 @@ const Categories = () => {
     >
       {categories.map(({ title, image }) => {
         return (
-          <Link key={title} to={`products/${title}`}>
+          <Link key={title} to={`categories/${title}`}>
             <Card
               sx={{
                 maxWidth: 445,

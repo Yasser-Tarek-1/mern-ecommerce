@@ -6,7 +6,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import DrawerLayout from "./DrawerLayout";
 
-const Cart = ({ show, onSetShow }) => {
+const Favorite = ({ show, onSetShow }) => {
   return (
     <DrawerLayout open={show} setOpen={onSetShow}>
       <Box>
@@ -26,7 +26,7 @@ const Cart = ({ show, onSetShow }) => {
               color: "gray",
             }}
           >
-            Cart
+            Favorite
           </Typography>
           <IconButton onClick={() => onSetShow(false)}>
             <CloseIcon />
@@ -37,4 +37,4 @@ const Cart = ({ show, onSetShow }) => {
   );
 };
 
-export default Cart;
+export default Favorite;

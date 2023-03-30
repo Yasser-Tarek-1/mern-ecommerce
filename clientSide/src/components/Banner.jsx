@@ -71,7 +71,7 @@ const Banner = () => {
             can browse the products and buy what you want
           </Typography>
           <Stack direction="row" justifyContent="center" gap={3}>
-            <Button
+            {/* <Button
               sx={{
                 color: "white",
                 border: "1px solid white",
@@ -79,7 +79,7 @@ const Banner = () => {
               }}
             >
               Read More
-            </Button>
+            </Button> */}
             <Button
               sx={{
                 color: "black",
@@ -91,7 +91,15 @@ const Banner = () => {
                 },
               }}
             >
-              Shop Now
+              <a
+                href="/#products"
+                style={{
+                  color: "#000",
+                  textDecoration: "none",
+                }}
+              >
+                Shop Now
+              </a>
             </Button>
           </Stack>
         </Box>
@@ -111,6 +119,7 @@ const Banner = () => {
               maxWidth: "100%",
               userSelect: "none",
             }}
+            loading="lazy"
           />
         </Box>
       </Stack>

@@ -16,7 +16,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const Header = ({ onSetShowCart }) => {
+const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
   return (
     <Box
       sx={{
@@ -36,7 +36,7 @@ const Header = ({ onSetShowCart }) => {
         >
           <List
             sx={{
-              width: "220px",
+              width: "150px",
               display: {
                 xs: "none",
                 md: "flex",
@@ -66,25 +66,7 @@ const Header = ({ onSetShowCart }) => {
                 padding: "0 4px",
               }}
             >
-              <Link
-                style={{
-                  color: "white",
-                  textDecoration: "none",
-                  textTransform: "uppercase",
-                  fontWeight: "normal",
-                  fontSize: "14px",
-                }}
-                to="/about"
-              >
-                About
-              </Link>
-            </ListItem>
-            <ListItem
-              sx={{
-                padding: "0 4px",
-              }}
-            >
-              <Link
+              <a
                 style={{
                   color: "white",
                   textDecoration: "none",
@@ -92,10 +74,10 @@ const Header = ({ onSetShowCart }) => {
                   fontWeight: 400,
                   fontSize: "14px",
                 }}
-                to="/#categories"
+                href="/#categories"
               >
                 Categories
-              </Link>
+              </a>
             </ListItem>
           </List>
           <Typography
@@ -119,14 +101,14 @@ const Header = ({ onSetShowCart }) => {
               textAlign: "right",
             }}
           >
-            <IconButton>
+            <IconButton onClick={() => onSetShowSearch(true)}>
               <SearchIcon
                 sx={{
                   color: "white",
                 }}
               />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={() => onSetShowFavorite(true)}>
               <FavoriteBorderIcon
                 sx={{
                   color: "white",
