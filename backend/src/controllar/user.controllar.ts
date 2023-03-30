@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User, UserI, validateUserFields } from "../models/user.model";
+import { User, validateUserFields } from "../models/user.model";
 import { hashSync, compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 export const registerUser = async (req: Request, res: Response) => {
@@ -42,8 +42,7 @@ export const loginUser = async (req: Request, res: Response) => {
     token,
   });
 };
-
-export const updateUser = async (req: Request, res: Response) => {
+export const updateProfile = async (req: Request, res: Response) => {
   const updatedUser: any = await User.findByIdAndUpdate(req.params.id, {
     ...req.body,
   });
