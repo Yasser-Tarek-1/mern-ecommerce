@@ -7,6 +7,7 @@ import ProductItem from "./ProductItem";
 const Products = () => {
   return (
     <Box
+      id="products"
       sx={{
         py: "60px",
       }}

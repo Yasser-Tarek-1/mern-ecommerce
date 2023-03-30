@@ -14,6 +14,8 @@ import eight from "./eight.jpg";
 import nine from "./nine.jpg";
 import ten from "./ten.jpg";
 
+import payment from "./payment.png";
+
 export {
   banner,
   clothes,
@@ -29,4 +31,5 @@ export {
   eight,
   nine,
   ten,
+  payment,
 };
