@@ -80,21 +80,29 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
               </a>
             </ListItem>
           </List>
-          <Typography
-            sx={{
-              fontSize: {
-                xs: "24px",
-                sm: "35px",
-              },
-              textTransform: "uppercase",
-              p: "8px 0",
-
-              fontWeight: "bold",
+          <Link
+            to="/"
+            style={{
+              color: "white",
+              textDecoration: "none",
             }}
-            component="h1"
           >
-            MernStore.
-          </Typography>
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: "24px",
+                  sm: "35px",
+                },
+                textTransform: "uppercase",
+                p: "8px 0",
+
+                fontWeight: "bold",
+              }}
+              component="h1"
+            >
+              MernStore.
+            </Typography>
+          </Link>
           <Box
             sx={{
               width: "220px",
