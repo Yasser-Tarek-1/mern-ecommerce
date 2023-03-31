@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-interface CartI {
+export interface CartI {
   user: Schema.Types.ObjectId;
   product: Schema.Types.ObjectId;
   quantity: number;
@@ -8,7 +8,7 @@ interface CartI {
 const cartSchema = new Schema<CartI>({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: "user",
   },
   product: {
     type: Schema.Types.ObjectId,
@@ -16,4 +16,4 @@ const cartSchema = new Schema<CartI>({
   },
   quantity: Number,
 });
-export const Cart = model("cart",cartSchema);
+export const Cart = model("cart", cartSchema);
