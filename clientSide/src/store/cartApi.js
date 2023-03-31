@@ -36,6 +36,6 @@ export const cartApi = createApi({
 
 export const {
   useGetCartItemsQuery,
-  useAddCartItemMutatuin,
-  useRemoveCartItemMutatuin,
+  useAddCartItemMutation,
+  useRemoveCartItemMutation,
 } = cartApi;
