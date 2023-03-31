@@ -1,24 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseUrl } from "../components/httpServices";
 
 export const productsApi = createApi({
   reducerPath: "productsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4000" }),
+  baseQuery: fetchBaseQuery({ baseUrl }),
+  tagTypes: ["Product"],
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: () => `/onlineStore/products`,
+      providesTags: ["Product"],
     }),
     getProductById: builder.query({
       query: (id) => `/onlineStore/products/${id}`,
-    }),
-    // this is in Cart, not in products 
-    getCartItems: builder.query({
-      query: () => `/onlineStore/cart`,
+      providesTags: ["Product"],
     }),
   }),
 });
 
-export const {
-  useGetProductsQuery,
-  useGetProductByIdQuery,
-  useGetCartItemsQuery,
-} = productsApi;
+export const { useGetProductsQuery, useGetProductByIdQuery } = productsApi;
