@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-const ProductDetails = ({  image, title, price,  description }) => {
+const ProductDetails = ({ image, title, price, description }) => {
   const [count, setCount] = useState(1);
   return (
     <Stack
@@ -50,7 +50,7 @@ const ProductDetails = ({  image, title, price,  description }) => {
             my: "10px",
           }}
         >
-          {description?.slice(0, 100)}
+          {description}
         </Typography>
         <Stack direction="row" gap={1} mt="20px">
           <ButtonGroup

@@ -3,8 +3,19 @@ import { Box, Typography, TextField, Stack, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useLoginHandlerMutation } from "../store/authApi";
 
 const LoginForm = () => {
+  const [loginHandler, result] = useLoginHandlerMutation();
+
+  console.log(result);
+
+  // if (result?.isError) {
+  //   alert(result.error.data.error);
+  // } else if (result?.isSuccess) {
+  //   alert(result.data.message);
+  // }
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -13,13 +24,13 @@ const LoginForm = () => {
     validationSchema: Yup.object({
       password: Yup.string()
         .required("No password provided.")
-        .min(8, "Password is too short."),
+        .min(6, "Password is too short."),
       email: Yup.string()
         .email("Invalid email address.")
         .required("No email provided."),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      loginHandler(values);
     },
   });
 
