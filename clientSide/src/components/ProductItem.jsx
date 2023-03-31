@@ -5,7 +5,7 @@ import { CardActionArea } from "@mui/material";
 
 import { Link } from "react-router-dom";
 
-const ProductItem = ({ _id, title, name, price, image, description }) => {
+const ProductItem = ({ _id, title, price, image, description }) => {
   return (
     <Box sx={{ width: 240 }}>
       <Link
@@ -32,7 +32,7 @@ const ProductItem = ({ _id, title, name, price, image, description }) => {
                   textTransform: "capitalize",
                 }}
               >
-                {name.slice(0, 10)}
+                {title.slice(0, 10)}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 ${price}

@@ -2,15 +2,15 @@ import { Schema, model } from "mongoose";
 // import joi from "joi";
 
 type ProductType = {
-  name: string;
+  title: string;
   image: string;
   description: string;
   price: number;
+  category: string;
 };
 
 const productsSchema = new Schema<ProductType>({
-  
-  name: {
+  title: {
     type: String,
     required: true,
   },
@@ -24,6 +24,10 @@ const productsSchema = new Schema<ProductType>({
   },
   price: {
     type: Number,
+    required: true,
+  },
+  category: {
+    type: String,
     required: true,
   },
 });
