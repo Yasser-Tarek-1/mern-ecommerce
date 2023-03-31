@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-const ProductDetails = ({ id, image, title, price }) => {
+const ProductDetails = ({ id, image, title, price, name, description }) => {
   const [count, setCount] = useState(1);
   return (
     <Stack
@@ -19,16 +19,20 @@ const ProductDetails = ({ id, image, title, price }) => {
       }}
     >
       <img src={image} alt={title} style={{ height: "250px" }} />
-      <Stack>
+      <Stack
+        sx={{
+          maxWidth: "370px",
+        }}
+      >
         <Typography
           component="h3"
           sx={{
-            fontSize: "32px",
+            fontSize: "26px",
             textTransform: "capitalize",
             fontWeight: "bold",
           }}
         >
-          {title}
+          {name}
         </Typography>
         <Typography
           component="p"
@@ -38,6 +42,15 @@ const ProductDetails = ({ id, image, title, price }) => {
           }}
         >
           ${price}
+        </Typography>
+        <Typography
+          component="p"
+          sx={{
+            fontSize: "20px",
+            my: "10px",
+          }}
+        >
+          {description?.slice(0, 100)}
         </Typography>
         <Stack direction="row" gap={1} mt="20px">
           <ButtonGroup

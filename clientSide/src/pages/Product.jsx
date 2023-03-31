@@ -1,27 +1,25 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { products } from "../utlis";
-
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ProductDetails from "../components/ProductDetails";
-
-const product = products[0];
+import { useGetProductByIdQuery } from "../store/productsApi";
 
 const Product = () => {
   let { productId } = useParams();
-
+  const { data, error, isLoading } = useGetProductByIdQuery(productId);
   return (
     <Box
       sx={{
-        height: "calc(100vh - 205px)",
+        minHeight: "calc(100vh - 205px)",
         p: "100px 16px 30px",
         color: "#000",
         display: "flex",
-        // alignItems: "top",
         justifyContent: "center",
       }}
     >
-      <ProductDetails {...product} />
+      {isLoading && <Typography>Loding...</Typography>}
+      {error && <Typography>{error.error}</Typography>}
+      <ProductDetails {...data?.product} />
     </Box>
   );
 };

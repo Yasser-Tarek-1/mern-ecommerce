@@ -10,7 +10,7 @@ export const productsApi = createApi({
     getProductById: builder.query({
       query: (id) => `/onlineStore/products/${id}`,
     }),
-    // this in Cart not in product
+    // this is in Cart, not in products 
     getCartItems: builder.query({
       query: () => `/onlineStore/cart`,
     }),
