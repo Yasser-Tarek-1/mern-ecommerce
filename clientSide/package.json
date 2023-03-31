@@ -14,6 +14,7 @@
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.15",
     "@reduxjs/toolkit": "^1.9.3",
+    "formik": "^2.2.9",
     "framer-motion": "^10.9.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
@@ -21,7 +22,8 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.9.0",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "yup": "^1.0.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
