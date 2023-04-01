@@ -3,7 +3,6 @@ import { Box, Typography, TextField, Stack, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { FilledInput } from "@mui/material";
 
 const SignupForm = () => {
   const formik = useFormik({
@@ -11,6 +10,7 @@ const SignupForm = () => {
       userName: "",
       email: "",
       password: "",
+      image: "",
     },
     validationSchema: Yup.object({
       userName: Yup.string().required("Username is Required"),

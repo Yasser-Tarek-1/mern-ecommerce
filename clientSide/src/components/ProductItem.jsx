@@ -32,7 +32,7 @@ const ProductItem = ({ _id, title, price, image, description }) => {
                   textTransform: "capitalize",
                 }}
               >
-                {title.slice(0, 10)}
+                {title}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 ${price}
