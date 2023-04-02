@@ -6,7 +6,7 @@ export const cartApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers) => {
-      headers.set("Authorization", localStorage.userToken);
+      headers.set("Authentication", localStorage.userToken);
       return headers;
     },
   }),
@@ -22,7 +22,7 @@ export const cartApi = createApi({
         method: "POST",
         body: payload,
         header: {
-          Authentication: localStorage.getItem("token"),
+          Authentication: localStorage.getItem("userToken"),
         },
       }),
       invalidatesTags: ["Cart"],
@@ -32,7 +32,7 @@ export const cartApi = createApi({
         url: `/onlineStore/cart/remove/${id}`,
         method: "DELETE",
         header: {
-          Authentication: localStorage.getItem("token"),
+          Authentication: localStorage.getItem("userToken"),
         },
       }),
       invalidatesTags: ["Cart"],

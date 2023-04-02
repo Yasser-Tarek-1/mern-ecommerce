@@ -1,9 +1,26 @@
 import React, { useState } from "react";
 import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useAddCartItemMutation } from "../store/rtk-query/cartApi";
+import { motion } from "framer-motion";
 
-const ProductDetails = ({ image, title, price, description }) => {
-  const [count, setCount] = useState(1);
+const ProductDetails = ({ _id, image, title, price, description }) => {
+  const [quantity, setQuantity] = useState(1);
+
+  const [addCartItem, result] = useAddCartItemMutation();
+  console.log(result);
+
+  const addHandler = () => {
+    addCartItem({
+      _id,
+      title,
+      price,
+      description,
+      image,
+      quantity,
+    });
+  };
+
   return (
     <Stack
       direction={{
@@ -60,7 +77,7 @@ const ProductDetails = ({ image, title, price, description }) => {
           >
             <Button
               onClick={() =>
-                setCount((prev) => {
+                setQuantity((prev) => {
                   return prev > 1 ? prev - 1 : 1;
                 })
               }
@@ -76,18 +93,22 @@ const ProductDetails = ({ image, title, price, description }) => {
               }}
               disableRipple
             >
-              {count}
+              {quantity}
             </Button>
             <Button
               sx={{
                 borderRadius: 0,
               }}
-              onClick={() => setCount(count + 1)}
+              onClick={() => setQuantity(quantity + 1)}
             >
               +
             </Button>
           </ButtonGroup>
           <Button
+            component={motion.button}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.2 }}
+            onClick={addHandler}
             sx={{
               borderRadius: 0,
             }}

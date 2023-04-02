@@ -11,14 +11,12 @@ const Product = () => {
     <Box
       sx={{
         minHeight: "calc(100vh - 205px)",
-        p: "100px 16px 30px",
+        p: "100px 16px 50px",
         color: "#000",
         display: "flex",
         justifyContent: "center",
       }}
     >
-      {isLoading && <Typography>Loding...</Typography>}
-      {error && <Typography>{error.error}</Typography>}
       <ProductDetails {...data?.product} />
     </Box>
   );

@@ -4,6 +4,7 @@ import { Card, Box, CardContent, CardMedia, Typography } from "@mui/material";
 import { CardActionArea } from "@mui/material";
 
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const ProductItem = ({ _id, title, price, image, description }) => {
   return (
@@ -14,8 +15,20 @@ const ProductItem = ({ _id, title, price, image, description }) => {
           textDecoration: "none",
         }}
       >
-        <Card sx={{ maxWidth: "100%" }}>
-          <CardActionArea>
+        <Card
+          sx={{ maxWidth: "100%" }}
+          component={motion.div}
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.2 }}
+        >
+          <CardActionArea
+            sx={
+              {
+                // minHeight: "280px",
+              }
+            }
+          >
             <CardMedia
               component="img"
               height="140"
@@ -30,11 +43,14 @@ const ProductItem = ({ _id, title, price, image, description }) => {
                 component="div"
                 sx={{
                   textTransform: "capitalize",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
                 {title}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="h6" color="text.secondary">
                 ${price}
               </Typography>
             </CardContent>

@@ -22,6 +22,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../store/slices/userLoginSlice";
 import { toast } from "react-toastify";
 
+import { motion } from "framer-motion";
+
 const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
   const userToken = localStorage.getItem("userToken");
   const { token } = useSelector((state) => state.login);
@@ -72,8 +74,9 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
               }}
             >
               <Link
+                className="link-hover"
                 style={{
-                  color: "white",
+                  color: "#fff",
                   textDecoration: "none",
                   textTransform: "uppercase",
                   fontWeight: "normal",
@@ -97,6 +100,7 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
                   fontWeight: 400,
                   fontSize: "14px",
                 }}
+                className="link-hover"
                 href="/#categories"
               >
                 Categories
@@ -113,7 +117,7 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
             <Typography
               sx={{
                 fontSize: {
-                  xs: "24px",
+                  xs: "20px",
                   sm: "35px",
                 },
                 textTransform: "uppercase",
@@ -131,31 +135,58 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
               textAlign: "right",
             }}
           >
-            <IconButton onClick={() => onSetShowSearch(true)}>
+            <IconButton
+              component={motion.button}
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => onSetShowSearch(true)}
+            >
               <SearchIcon
                 sx={{
                   color: "white",
-                  fontSize: "26px",
+                  fontSize: {
+                    xs: "22px",
+                    md: "26px",
+                  },
                 }}
               />
             </IconButton>
 
             {token && userToken && (
               <>
-                <IconButton onClick={() => onSetShowFavorite(true)}>
+                <IconButton
+                  component={motion.button}
+                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => onSetShowFavorite(true)}
+                >
                   <FavoriteBorderIcon
                     sx={{
                       color: "white",
-                      fontSize: "26px",
+                      fontSize: {
+                        xs: "22px",
+                        md: "26px",
+                      },
                     }}
                   />
                 </IconButton>
-                <IconButton onClick={() => onSetShowCart(true)}>
+                <IconButton
+                  component={motion.button}
+                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => onSetShowCart(true)}
+                >
                   <Badge badgeContent={4} color="secondary">
                     <ShoppingCartOutlinedIcon
                       sx={{
                         color: "white",
-                        fontSize: "26px",
+                        fontSize: {
+                          xs: "22px",
+                          md: "26px",
+                        },
                       }}
                     />
                   </Badge>
@@ -164,11 +195,21 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
             )}
 
             <Button
+              component={motion.button}
+              whileTap={{ scale: 0.9 }}
+              transition={{ duration: 0.2 }}
               onClick={btnHandler}
               color="secondary"
               variant="contained"
               sx={{
-                ml: "22px",
+                ml: {
+                  xs: "14px",
+                  md: "22px",
+                },
+                fontSize: {
+                  xs: "12px",
+                  md: "14px",
+                },
                 textTransform: "capitalize",
               }}
             >

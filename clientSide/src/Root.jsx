@@ -11,8 +11,8 @@ const Root = () => {
   const [showCart, setShowCart] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showFavorite, setShowFavorite] = useState(false);
-  const data = useGetCartItemsQuery();
 
+  const data = useGetCartItemsQuery();
   console.log(data);
 
   return (

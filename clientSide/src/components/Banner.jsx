@@ -3,6 +3,8 @@ import { Box, Stack, Typography, Button } from "@mui/material";
 
 import { banner } from "../assets";
 
+import { motion } from "framer-motion";
+
 const Banner = () => {
   return (
     <Box
@@ -14,6 +16,7 @@ const Banner = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        overflow: "hidden",
       }}
     >
       <Stack
@@ -32,6 +35,9 @@ const Banner = () => {
         }}
       >
         <Box
+          data-aos="fade-right"
+          data-aos-delay="50"
+          data-aos-duration="1500"
           sx={{
             flex: 1,
           }}
@@ -81,6 +87,10 @@ const Banner = () => {
               Read More
             </Button> */}
             <Button
+              component={motion.button}
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
               sx={{
                 color: "black",
                 border: "1px solid white",
@@ -104,6 +114,9 @@ const Banner = () => {
           </Stack>
         </Box>
         <Box
+          data-aos="fade-left"
+          data-aos-delay="50"
+          data-aos-duration="1500"
           sx={{
             flex: 1,
             width: {
