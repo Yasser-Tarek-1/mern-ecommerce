@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { baseUrl } from "../../components/httpReq";
+import { baseUrl } from "../../httpRequest";
 import axios from "axios";
 
 export const register = createAsyncThunk(

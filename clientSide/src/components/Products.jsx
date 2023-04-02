@@ -12,22 +12,22 @@ import {
 
 import ProductItem from "./ProductItem";
 
-import { useGetProductsQuery } from "../store/rtk-query/productsApi";
+import { services } from "../services";
 import { useState } from "react";
+
+const categories = ["all", "phones", "shoes", "headphones"];
 
 const Products = () => {
   const [active, setActive] = useState("all");
-  const { data, error, isLoading } = useGetProductsQuery();
+  const { data, error, isLoading } = services();
 
   const filterProducts = () => {
     // category
-    if (active !== "all") {
-      return data?.products?.filter((item) => {
-        return item.category === active;
-      });
-    } else {
-      return data?.products;
-    }
+    return active === "all"
+      ? data?.products
+      : data?.products?.filter((item) => {
+          return item.category === active;
+        });
   };
 
   return (
@@ -57,90 +57,37 @@ const Products = () => {
             }}
           >
             <ListItem disablePadding>
-              <ListItemButton
-                onClick={() => setActive("all")}
-                sx={{
-                  borderRadius: "12px",
-                  padding: {
-                    xs: "4px 12px",
-                    md: "4px 24px",
-                  },
-                  transition: "all 0.5s",
-                  textAlign: "center",
-                  mx: "4px",
-                  backgroundColor: active === "all" && "#9c27b0",
-                  color: active === "all" && "#fff",
-                  "&:hover": {
-                    backgroundColor: "#9c27b0",
-                    color: "#fff",
-                  },
-                }}
-              >
-                <ListItemText primary="All" />
-              </ListItemButton>
-              <ListItemButton
-                onClick={() => setActive("phones")}
-                sx={{
-                  borderRadius: "12px",
-                  padding: {
-                    xs: "4px 12px",
-                    md: "4px 24px",
-                  },
-                  transition: "all 0.5s",
-                  textAlign: "center",
-                  mx: "4px",
-                  backgroundColor: active === "phones" && "#9c27b0",
-                  color: active === "phones" && "#fff",
-                  "&:hover": {
-                    backgroundColor: "#9c27b0",
-                    color: "#fff",
-                  },
-                }}
-              >
-                <ListItemText primary="Phones" />
-              </ListItemButton>
-              <ListItemButton
-                onClick={() => setActive("shoes")}
-                sx={{
-                  borderRadius: "12px",
-                  padding: {
-                    xs: "4px 12px",
-                    md: "4px 24px",
-                  },
-                  transition: "all 0.5s",
-                  textAlign: "center",
-                  mx: "4px",
-                  backgroundColor: active === "shoes" && "#9c27b0",
-                  color: active === "shoes" && "#fff",
-                  "&:hover": {
-                    backgroundColor: "#9c27b0",
-                    color: "#fff",
-                  },
-                }}
-              >
-                <ListItemText primary="Shoes" />
-              </ListItemButton>
-              <ListItemButton
-                onClick={() => setActive("headphones")}
-                sx={{
-                  borderRadius: "12px",
-                  padding: {
-                    xs: "4px 12px",
-                    md: "4px 24px",
-                  },
-                  transition: "all 0.5s",
-                  textAlign: "center",
-                  backgroundColor: active === "headphones" && "#9c27b0",
-                  color: active === "headphones" && "#fff",
-                  mx: "4px",
-                  "&:hover": {
-                    backgroundColor: "#9c27b0",
-                    color: "#fff",
-                  },
-                }}
-              >
-                <ListItemText primary="Headphones" />
-              </ListItemButton>
+              {categories.map((category, idx) => {
+                return (
+                  <ListItemButton
+                    key={idx}
+                    onClick={() => setActive(category)}
+                    sx={{
+                      borderRadius: "12px",
+                      padding: {
+                        xs: "4px 12px",
+                        md: "4px 24px",
+                      },
+                      transition: "all 0.5s",
+                      textAlign: "center",
+                      mx: "4px",
+                      backgroundColor: active === category && "#9c27b0",
+                      color: active === category && "#fff",
+                      "&:hover": {
+                        backgroundColor: "#9c27b0",
+                        color: "#fff",
+                      },
+                    }}
+                  >
+                    <ListItemText
+                      sx={{
+                        textTransform: "capitalize",
+                      }}
+                      primary={category}
+                    />
+                  </ListItemButton>
+                );
+              })}
             </ListItem>
           </List>
         </>

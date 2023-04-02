@@ -7,8 +7,7 @@ import { motion } from "framer-motion";
 const ProductDetails = ({ _id, image, title, price, description }) => {
   const [quantity, setQuantity] = useState(1);
 
-  const [addCartItem, result] = useAddCartItemMutation();
-  console.log(result);
+  const [addCartItem] = useAddCartItemMutation();
 
   const addHandler = () => {
     addCartItem({
