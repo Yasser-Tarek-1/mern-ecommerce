@@ -3,7 +3,7 @@ import { Box, Stack, Container, Typography } from "@mui/material";
 
 import ProductItem from "./ProductItem";
 
-import { useGetProductsQuery } from "../store/productsApi";
+import { useGetProductsQuery } from "../store/rtk-query/productsApi";
 
 const Products = () => {
   const { data, error, isLoading } = useGetProductsQuery();

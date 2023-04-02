@@ -3,7 +3,8 @@ import { Box, Typography, TextField, Stack, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useLoginHandlerMutation } from "../store/authApi";
+import { login } from "../store/slices/userLoginSlice";
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
   const [loginHandler, result] = useLoginHandlerMutation();
@@ -13,6 +14,7 @@ const LoginForm = () => {
   // } else if (result?.isSuccess) {
   //   alert(result.data.message);
   // }
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -27,13 +29,15 @@ const LoginForm = () => {
         .email("Invalid email address.")
         .required("No email provided."),
     }),
-    onSubmit: () => {
-      loginHandler(formik.values).then(({ error, data }) => {
-        if (error) console.log(error.data.error);
-        console.log(data.res.message);  
-        localStorage.setItem("token", data.res.token);
-        localStorage.setItem("userId", data.res.userId);
-      });
+    // onSubmit: () => {
+    //   loginHandler(formik.values).then(({ error, data }) => {
+    //     if (error) console.log(error.data.error);
+    //     console.log(data.res.message);  
+    //     localStorage.setItem("token", data.res.token);
+    //     localStorage.setItem("userId", data.res.userId);
+    //   });
+    onSubmit: (values) => {
+      dispatch(login(values));
     },
   });
 

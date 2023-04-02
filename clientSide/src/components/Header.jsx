@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
   Stack,
@@ -9,6 +9,7 @@ import {
   ListItem,
   Badge,
   Paper,
+  Button,
 } from "@mui/material";
 
 import IconButton from "@mui/material/IconButton";
@@ -16,7 +17,25 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
+import { useDispatch } from "react-redux";
+
+import { logOut } from "../store/slices/userLoginSlice";
+
 const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
+  const userToken = localStorage.getItem("userToken");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const btnHandler = () => {
+    if (userToken) {
+      // logout
+      dispatch(logOut());
+      localStorage.removeItem("userToken");
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -105,7 +124,6 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
           </Link>
           <Box
             sx={{
-              width: "220px",
               textAlign: "right",
             }}
           >
@@ -132,6 +150,16 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
                 />
               </Badge>
             </IconButton>
+            <Button
+              onClick={btnHandler}
+              color="secondary"
+              variant="contained"
+              sx={{
+                ml: "22px",
+              }}
+            >
+              {userToken ? "logout" : "login"}
+            </Button>
           </Box>
         </Stack>
       </Container>

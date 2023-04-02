@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Box, Stack } from "@mui/material";
 import SignupForm from "../components/SignupForm";
 import { authBanner } from "../assets";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const { success, error } = useSelector((state) => state.register);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (success) {
+      toast.success(success);
+      navigate("/login");
+    }
+    if (error) {
+      toast.error(error);
+    }
+  }, [success, error]);
+
   return (
     <Box
       sx={{

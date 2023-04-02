@@ -3,26 +3,31 @@ import { Box, Typography, TextField, Stack, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { register } from "../store/slices/userRegisterSlice";
 
 const SignupForm = () => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
-      userName: "",
+      username: "",
       email: "",
       password: "",
-      image: "",
+      phone: "remove this",
+      image: "remove this",
     },
     validationSchema: Yup.object({
-      userName: Yup.string().required("Username is Required"),
+      username: Yup.string().required("Username is Required"),
       email: Yup.string()
         .email("Invalid email address.")
         .required("No email provided."),
       password: Yup.string()
         .required("No password provided.")
-        .min(8, "Password is too short."),
+        .min(6, "Password is too short."),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(register(values));
     },
   });
 
@@ -67,15 +72,15 @@ const SignupForm = () => {
       >
         <Stack width="100%" gap={5} mt="45px">
           <TextField
-            label="Username"
+            label="username"
             variant="standard"
             color="secondary"
             type="string"
-            name="userName"
+            name="username"
             onChange={formik.handleChange}
-            value={formik.values.userName}
-            error={formik.touched.userName && Boolean(formik.errors.userName)}
-            helperText={formik.touched.userName && formik.errors.userName}
+            value={formik.values.username}
+            error={formik.touched.username && Boolean(formik.errors.username)}
+            helperText={formik.touched.username && formik.errors.username}
           />
           <TextField
             label="Email"
