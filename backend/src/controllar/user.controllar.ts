@@ -22,7 +22,6 @@ export const registerUser = async (req: Request, res: Response) => {
     resala: "Registeration is successed",
   });
 };
-
 export const loginUser = async (req: Request, res: Response) => {
   const user: any = await User.findOne({ email: req.body.email });
   if (!user) {
@@ -47,13 +46,18 @@ export const loginUser = async (req: Request, res: Response) => {
       success: true,
       res: {
         message: "You are logged in successfully",
-        userId: user._id,
         token,
       },
     });
 };
-export const getUserInfo = async () => {};
-
+export const getUserInfo = async (req: AuthenticatedRequest, res: Response) =>
+  res.status(200).send({
+    success: true,
+    res: {
+      message: "user data is available now",
+      user: req.user,
+    },
+});
 export const updateProfile = async (
   req: AuthenticatedRequest,
   res: Response
@@ -63,15 +67,17 @@ export const updateProfile = async (
     return res.status(400).send({ error: error.details[0].message });
   }
 
-  await User.findByIdAndUpdate(
-    req.user?._id,
+  let user = await User.findByIdAndUpdate(
+    req.user._id,
     {
       ...req.body,
+      password: hashSync(req.body.password, 10),
     },
     { new: true }
   );
   res.status(200).send({
     success: true,
     message: "You information has been updated",
+    // user,
   });
 };

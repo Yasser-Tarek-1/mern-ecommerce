@@ -1,23 +1,21 @@
 import { Schema, model } from "mongoose";
 import joi from "joi";
-import jwt, { Secret } from "jsonwebtoken";
 export interface UserI {
   _id: Schema.Types.ObjectId;
   email: string;
   password: string;
   username: string;
-  // birthDate: Date;
   phone: string;
-  image: string;
+  image?: string;
+  createAt: Date;
 }
 export const validateUserFields = (payload: UserI) => {
   let userSch = joi.object({
     email: joi.string().email().required(),
     password: joi.string().required(),
     username: joi.string().required(),
-    // birthDate: joi.date().required(),
     phone: joi.string().required(),
-    image: joi.string().required(),
+    image: joi.string(),
   });
   return userSch.validate(payload);
 };
@@ -41,12 +39,10 @@ const userSchema = new Schema<UserI>({
   },
   image: {
     type: String,
-    required: true,
   },
-
-  // birthDate: {
-  //   type: Date,
-  //   required: true,
-  // },
+  createAt: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 export const User = model("user", userSchema);

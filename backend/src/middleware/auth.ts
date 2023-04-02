@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { UserI, User } from "../models/user.model";
 export interface AuthenticatedRequest extends Request {
-  user? : UserI | any;
+  user?: UserI | any;
 }
 export const checkAuth = async (
   req: Request,
@@ -20,7 +20,7 @@ export const checkAuth = async (
       token,
       process.env.SECRET_KEY as jwt.Secret
     );
-    (req as AuthenticatedRequest).user = await User.findById(decodeToken.id);
+    (req as AuthenticatedRequest).user = await User.findById(decodeToken._id);
     next();
   } catch (error) {
     return res.status(400).send({
