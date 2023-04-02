@@ -17,20 +17,24 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { logOut } from "../store/slices/userLoginSlice";
+import { toast } from "react-toastify";
 
 const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
   const userToken = localStorage.getItem("userToken");
+  const { token } = useSelector((state) => state.login);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const btnHandler = () => {
-    if (userToken) {
+    if (token && userToken) {
       // logout
       dispatch(logOut());
       localStorage.removeItem("userToken");
+      toast.success("You logout successfully");
     } else {
       navigate("/login");
     }
@@ -131,34 +135,44 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
               <SearchIcon
                 sx={{
                   color: "white",
+                  fontSize: "26px",
                 }}
               />
             </IconButton>
-            <IconButton onClick={() => onSetShowFavorite(true)}>
-              <FavoriteBorderIcon
-                sx={{
-                  color: "white",
-                }}
-              />
-            </IconButton>
-            <IconButton onClick={() => onSetShowCart(true)}>
-              <Badge badgeContent={4} color="secondary">
-                <ShoppingCartOutlinedIcon
-                  sx={{
-                    color: "white",
-                  }}
-                />
-              </Badge>
-            </IconButton>
+
+            {token && userToken && (
+              <>
+                <IconButton onClick={() => onSetShowFavorite(true)}>
+                  <FavoriteBorderIcon
+                    sx={{
+                      color: "white",
+                      fontSize: "26px",
+                    }}
+                  />
+                </IconButton>
+                <IconButton onClick={() => onSetShowCart(true)}>
+                  <Badge badgeContent={4} color="secondary">
+                    <ShoppingCartOutlinedIcon
+                      sx={{
+                        color: "white",
+                        fontSize: "26px",
+                      }}
+                    />
+                  </Badge>
+                </IconButton>
+              </>
+            )}
+
             <Button
               onClick={btnHandler}
               color="secondary"
               variant="contained"
               sx={{
                 ml: "22px",
+                textTransform: "capitalize",
               }}
             >
-              {userToken ? "logout" : "login"}
+              {token && userToken ? "logout" : "login"}
             </Button>
           </Box>
         </Stack>

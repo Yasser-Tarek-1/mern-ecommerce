@@ -3,7 +3,13 @@ import { baseUrl } from "../../components/httpReq";
 
 export const cartApi = createApi({
   reducerPath: "cartApi",
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl,
+    prepareHeaders: (headers) => {
+      headers.set("Authorization", localStorage.userToken);
+      return headers;
+    },
+  }),
   tagTypes: ["Cart"],
   endpoints: (builder) => ({
     getCartItems: builder.query({

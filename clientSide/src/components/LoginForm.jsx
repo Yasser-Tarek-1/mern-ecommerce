@@ -68,7 +68,6 @@ const LoginForm = () => {
       >
         <Stack width="100%" gap={5} mt="45px">
           <TextField
-            id="standard-basic"
             label="Username"
             variant="standard"
             color="secondary"
@@ -80,7 +79,6 @@ const LoginForm = () => {
             helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
-            id="standard-basic"
             label="Password"
             variant="standard"
             color="secondary"

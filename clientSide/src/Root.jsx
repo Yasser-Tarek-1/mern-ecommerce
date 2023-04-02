@@ -5,14 +5,15 @@ import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
 import Search from "./components/Search";
 import Favorite from "./components/Favorite";
-import { useSelector } from "react-redux";
+import { useGetCartItemsQuery } from "./store/rtk-query/cartApi";
 
 const Root = () => {
   const [showCart, setShowCart] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showFavorite, setShowFavorite] = useState(false);
+  const data = useGetCartItemsQuery();
 
-  const { productsApi } = useSelector((state) => state);
+  console.log(data);
 
   return (
     <>
