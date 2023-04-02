@@ -7,6 +7,8 @@ import Root from "./Root";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
+import Protected from "./components/Protected";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -29,10 +31,18 @@ export const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <Protected>
+        <Login />
+      </Protected>
+    ),
   },
   {
     path: "/signup",
-    element: <Signup />,
+    element: (
+      <Protected>
+        <Signup />
+      </Protected>
+    ),
   },
 ]);

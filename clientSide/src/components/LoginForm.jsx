@@ -3,18 +3,11 @@ import { Box, Typography, TextField, Stack, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useLoginHandlerMutation } from "../store/authApi";
+import { login } from "../store/slices/userLoginSlice";
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
-  const [loginHandler, result] = useLoginHandlerMutation();
-
-  console.log(result);
-
-  // if (result?.isError) {
-  //   alert(result.error.data.error);
-  // } else if (result?.isSuccess) {
-  //   alert(result.data.message);
-  // }
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -30,7 +23,7 @@ const LoginForm = () => {
         .required("No email provided."),
     }),
     onSubmit: (values) => {
-      loginHandler(values);
+      dispatch(login(values));
     },
   });
 

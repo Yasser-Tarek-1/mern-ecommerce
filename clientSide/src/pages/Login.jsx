@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Box, Stack } from "@mui/material";
 import LoginForm from "../components/LoginForm";
 import { authBanner } from "../assets";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const Login = () => {
+  const { success, error, token } = useSelector((state) => state.login);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (success) {
+      localStorage.setItem("userToken", token);
+      toast.success(success);
+      navigate("/");
+    }
+    if (error) {
+      toast.error(error);
+    }
+  }, [success, error]);
+
   return (
     <Box
       sx={{
