@@ -27,22 +27,33 @@ export const loginUser = async (req: Request, res: Response) => {
   const user: any = await User.findOne({ email: req.body.email });
   if (!user) {
     return res.status(400).send({
-      error: "Invalid email",
+      error: "Invalid email or passord",
     });
   }
   const checkPassword = user && compareSync(req.body.password, user.password);
   if (!checkPassword) {
     return res.status(400).send({
-      error: "Invalid password",
+      error: "Invalid email or passord",
     });
   }
-  const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY as string);
-  res.header("Authentication", token).status(200).send({
-    success: true,
-    message: "You are logged in successfully",
-    token,
-  });
+  const token = jwt.sign(
+    { _id: user._id },
+    process.env.SECRET_KEY as jwt.Secret
+  );
+  res
+    .header("Authentication", token)
+    .status(200)
+    .send({
+      success: true,
+      res: {
+        message: "You are logged in successfully",
+        userId: user._id,
+        token,
+      },
+    });
 };
+export const getUserInfo = async () => {};
+
 export const updateProfile = async (
   req: AuthenticatedRequest,
   res: Response

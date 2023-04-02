@@ -1,4 +1,5 @@
 import {
+  getUserInfo,
   loginUser,
   registerUser,
   updateProfile,
@@ -9,5 +10,5 @@ const router = Router();
 router.route("/login").post(loginUser);
 router.route("/register").post(registerUser);
 router.route("/update").post(checkAuth, updateProfile);
-
+router.route("/getMe").get(checkAuth, getUserInfo);
 export default router;

@@ -7,6 +7,13 @@ import { login } from "../store/slices/userLoginSlice";
 import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
+  const [loginHandler, result] = useLoginHandlerMutation();
+
+  // if (result?.isError) {
+  //   alert(result.error.data.error);
+  // } else if (result?.isSuccess) {
+  //   alert(result.data.message);
+  // }
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -22,6 +29,13 @@ const LoginForm = () => {
         .email("Invalid email address.")
         .required("No email provided."),
     }),
+    // onSubmit: () => {
+    //   loginHandler(formik.values).then(({ error, data }) => {
+    //     if (error) console.log(error.data.error);
+    //     console.log(data.res.message);  
+    //     localStorage.setItem("token", data.res.token);
+    //     localStorage.setItem("userId", data.res.userId);
+    //   });
     onSubmit: (values) => {
       dispatch(login(values));
     },
