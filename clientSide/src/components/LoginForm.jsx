@@ -8,8 +8,6 @@ import { useLoginHandlerMutation } from "../store/authApi";
 const LoginForm = () => {
   const [loginHandler, result] = useLoginHandlerMutation();
 
-  console.log(result);
-
   // if (result?.isError) {
   //   alert(result.error.data.error);
   // } else if (result?.isSuccess) {
@@ -29,8 +27,13 @@ const LoginForm = () => {
         .email("Invalid email address.")
         .required("No email provided."),
     }),
-    onSubmit: (values) => {
-      loginHandler(values);
+    onSubmit: () => {
+      loginHandler(formik.values).then(({ error, data }) => {
+        if (error) console.log(error.data.error);
+        console.log(data.res.message);  
+        localStorage.setItem("token", data.res.token);
+        localStorage.setItem("userId", data.res.userId);
+      });
     },
   });
 

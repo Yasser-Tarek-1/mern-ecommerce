@@ -5,7 +5,7 @@ export const getCartItems = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
-  const cartItems: CartI[] | any = await Cart.find({ user: req.user._id });
+  const cartItems: CartI[] | any = await Cart.find();
   if (!cartItems[0]) {
     return res.status(400).send({
       error: "No cart items yet...",
@@ -17,10 +17,7 @@ export const getCartItems = async (
     cartItems,
   });
 };
-export const createOrder = async (
-  req: AuthenticatedRequest,
-  res: Response
-) => {
+export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
   const checkExisted = await Cart.findOne({
     product: {
       _id: req.params.id,

@@ -36,7 +36,10 @@ export const loginUser = async (req: Request, res: Response) => {
       error: "Invalid email or passord",
     });
   }
-  const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY as string);
+  const token = jwt.sign(
+    { _id: user._id },
+    process.env.SECRET_KEY as jwt.Secret
+  );
   res
     .header("Authentication", token)
     .status(200)
