@@ -8,12 +8,13 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 const Login = () => {
-  const { success, error, token } = useSelector((state) => state.login);
+  const { success, error, token, userId } = useSelector((state) => state.login);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (success) {
       localStorage.setItem("userToken", token);
+      localStorage.setItem("userId", userId);
       toast.success(success);
       navigate("/");
     }

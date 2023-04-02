@@ -7,7 +7,7 @@ import { login } from "../store/slices/userLoginSlice";
 import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
-  const [loginHandler, result] = useLoginHandlerMutation();
+  // const [loginHandler, result] = useLoginHandlerMutation();
 
   // if (result?.isError) {
   //   alert(result.error.data.error);
@@ -32,7 +32,7 @@ const LoginForm = () => {
     // onSubmit: () => {
     //   loginHandler(formik.values).then(({ error, data }) => {
     //     if (error) console.log(error.data.error);
-    //     console.log(data.res.message);  
+    //     console.log(data.res.message);
     //     localStorage.setItem("token", data.res.token);
     //     localStorage.setItem("userId", data.res.userId);
     //   });

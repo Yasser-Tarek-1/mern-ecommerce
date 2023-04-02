@@ -39,10 +39,9 @@ export const userRegisterSlice = createSlice({
       state.error = null;
       state.success = null;
     },
-    [register.fulfilled]: (state) => {
+    [register.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.success = true;
-      // action.payload.resala
+      state.success = action.payload.resala;
     },
     [register.rejected]: (state, action) => {
       state.isLoading = false;

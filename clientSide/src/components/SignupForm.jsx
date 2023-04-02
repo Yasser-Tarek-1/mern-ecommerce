@@ -72,7 +72,7 @@ const SignupForm = () => {
       >
         <Stack width="100%" gap={5} mt="45px">
           <TextField
-            label="username"
+            label="Username"
             variant="standard"
             color="secondary"
             type="string"

@@ -33,7 +33,7 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
     if (token && userToken) {
       // logout
       dispatch(logOut());
-      localStorage.removeItem("userToken");
+      localStorage.clear();
       toast.success("You logout successfully");
     } else {
       navigate("/login");

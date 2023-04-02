@@ -25,11 +25,13 @@ export const login = createAsyncThunk(
 );
 
 const userToken = localStorage.getItem("userToken");
+const userId = localStorage.getItem("userId");
 
 const initialState = {
   isLoading: false,
-  success: false,
+  success: null,
   token: userToken ? userToken : null,
+  userId: userId ? userId : null,
   error: null,
 };
 
@@ -49,8 +51,9 @@ export const userLoginSlice = createSlice({
     },
     [login.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.token = action.payload.token;
-      state.success = action.payload.message;
+      state.userId = action.payload.res.userId;
+      state.token = action.payload.res.token;
+      state.success = action.payload.res.message;
     },
     [login.rejected]: (state, action) => {
       state.isLoading = false;
