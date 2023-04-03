@@ -6,6 +6,10 @@ import { store } from "./store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
+AOS.init();
+
 const App = () => {
   return (
     <Provider store={store}>

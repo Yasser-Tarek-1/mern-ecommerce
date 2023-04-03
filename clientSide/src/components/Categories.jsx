@@ -6,9 +6,8 @@ import {
   CardActionArea,
   CardMedia,
   Typography,
+  Box,
 } from "@mui/material";
-
-import { Link } from "react-router-dom";
 
 const Categories = () => {
   return (
@@ -20,41 +19,45 @@ const Categories = () => {
       py="60px"
       flexWrap="wrap"
     >
-      {categories.map(({ title, image }) => {
+      {categories.map(({ title, image }, idx) => {
         return (
-          <Link key={title} to={`categories/${title}`}>
-            <Card
+          <Box
+            data-aos={
+              idx === 0 ? "fade-right" : idx === 1 ? "fade-up" : "fade-left"
+            }
+            // data-aos-delay="50"
+            data-aos-duration="750"
+            key={title}
+            sx={{
+              maxWidth: 445,
+              boxShadow: 2,
+              borderRadius: 0,
+              position: "relative",
+            }}
+          >
+            <Typography
               sx={{
-                maxWidth: 445,
-                boxShadow: 2,
-                borderRadius: 0,
-                position: "relative",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                fontSize: "20px",
+                color: "#fff",
+                zIndex: 99,
+                textTransform: "uppercase",
+                transform: "translate(-50%,-50%)",
               }}
-            > 
-              <Typography
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  fontSize: "20px",
-                  color: "#fff",
-                  zIndex: 99,
-                  textTransform: "uppercase",
-                  transform: "translate(-50%,-50%)",
-                }}
-              >
-                {title}
-              </Typography>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="160"
-                  image={image}
-                  alt="categories-img"
-                />
-              </CardActionArea>
-            </Card>
-          </Link>
+            >
+              {title}
+            </Typography>
+            <Box>
+              <CardMedia
+                component="img"
+                height="160"
+                image={image}
+                alt="categories-img"
+              />
+            </Box>
+          </Box>
         );
       })}
     </Stack>

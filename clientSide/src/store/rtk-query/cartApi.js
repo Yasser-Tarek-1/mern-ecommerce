@@ -1,9 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "../../components/httpReq";
+import { baseUrl } from "../../httpRequest";
 
 export const cartApi = createApi({
   reducerPath: "cartApi",
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl,
+    prepareHeaders: (headers) => {
+      headers.set("Authentication", localStorage.userToken);
+      return headers;
+    },
+  }),
   tagTypes: ["Cart"],
   endpoints: (builder) => ({
     getCartItems: builder.query({
@@ -16,7 +22,7 @@ export const cartApi = createApi({
         method: "POST",
         body: payload,
         header: {
-          Authentication: localStorage.getItem("token"),
+          Authentication: localStorage.getItem("userToken"),
         },
       }),
       invalidatesTags: ["Cart"],
@@ -26,7 +32,7 @@ export const cartApi = createApi({
         url: `/onlineStore/cart/remove/${id}`,
         method: "DELETE",
         header: {
-          Authentication: localStorage.getItem("token"),
+          Authentication: localStorage.getItem("userToken"),
         },
       }),
       invalidatesTags: ["Cart"],
