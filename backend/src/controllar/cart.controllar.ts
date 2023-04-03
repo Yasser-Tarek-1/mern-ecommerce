@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { AuthenticatedRequest } from "../middleware/auth";
 import { Cart, CartI } from "../models/cart.model";
-import Product, { ProductI } from "../models/Products.model";
+import Product from "../models/Products.model";
 import { User } from "../models/user.model";
 export const getCartItems = async (
   req: AuthenticatedRequest,
@@ -35,7 +35,11 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
   }
   const newOrder = await new Cart({
     product: {
-      ...product,
+      _id: product._id,
+      title: product.title,
+      image: product.image,
+      description: product.description,
+      price: product.price,
       quantity: req.body.quantity,
     },
     user,
@@ -71,7 +75,17 @@ export const updateQuantity = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
-  const product = await Product.findById(req.params.id);
+  const product: any = await Product.findById(req.params.id);
+  const checkExisted = await Cart.findOne({
+    "user.email": req.user.email,
+    "product._id": req.params.id,
+  });
+  if (!checkExisted) {
+    return res.status(404).send({
+      error: "Product is not existed to update it's quantity",
+    });
+  }
+
   await Cart.findOneAndUpdate(
     {
       "product._id": req.params.id,
@@ -80,10 +94,18 @@ export const updateQuantity = async (
     {
       user: req.user,
       product: {
-        ...product,
+        _id: product._id,
+        title: product.title,
+        image: product.image,
+        description: product.description,
+        price: product.price,
         quantity: req.body.quantity,
       },
     },
     { new: true }
   );
+  res.status(200).send({
+    success: true,
+    message: "Quantity is updated",
+  });
 };
