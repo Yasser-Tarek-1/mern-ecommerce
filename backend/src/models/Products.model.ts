@@ -1,15 +1,14 @@
 import { Schema, model } from "mongoose";
 // import joi from "joi";
 
-type ProductType = {
+export interface ProductI  {
   title: string;
   image: string;
   description: string;
   price: number;
   category: string;
 };
-
-const productsSchema = new Schema<ProductType>({
+const productsSchema = new Schema<ProductI>({
   title: {
     type: String,
     required: true,

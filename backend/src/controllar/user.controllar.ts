@@ -57,7 +57,7 @@ export const getUserInfo = async (req: AuthenticatedRequest, res: Response) =>
       message: "user data is available now",
       user: req.user,
     },
-});
+  });
 export const updateProfile = async (
   req: AuthenticatedRequest,
   res: Response
