@@ -12,7 +12,7 @@ export const checkAuth = async (
   const token: string | undefined = req.header("Authentication");
   if (!token) {
     return res.status(401).send({
-      error: "Please login first!",
+      error: "Sorry You are not authenticated!",
     });
   }
   try {

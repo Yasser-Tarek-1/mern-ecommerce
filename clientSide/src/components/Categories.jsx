@@ -30,7 +30,7 @@ const Categories = () => {
                 borderRadius: 0,
                 position: "relative",
               }}
-            >
+            > 
               <Typography
                 sx={{
                   position: "absolute",
