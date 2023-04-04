@@ -18,22 +18,22 @@ export const cartApi = createApi({
     }),
     addCartItem: builder.mutation({
       query: (payload) => ({
-        url: `/onlineStore/cart/order`,
+        url: `/onlineStore/cart/order/add`,
         method: "POST",
         body: payload,
-        header: {
-          Authentication: localStorage.getItem("userToken"),
-        },
+        // header: {
+        //   Authentication: localStorage.getItem("userToken"),
+        // },
       }),
       invalidatesTags: ["Cart"],
     }),
     removeCartItem: builder.mutation({
       query: (id) => ({
-        url: `/onlineStore/cart/remove/${id}`,
+        url: `/onlineStore/cart/order/remove/${id}`,
         method: "DELETE",
-        header: {
-          Authentication: localStorage.getItem("userToken"),
-        },
+        // header: {
+        //   Authentication: localStorage.getItem("userToken"),
+        // },
       }),
       invalidatesTags: ["Cart"],
     }),

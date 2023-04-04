@@ -12,14 +12,14 @@ import {
 
 import ProductItem from "./ProductItem";
 
-import { services } from "../services";
+import { productsData } from "../services";
 import { useState } from "react";
 
 const categories = ["all", "phones", "shoes", "headphones"];
 
 const Products = () => {
   const [active, setActive] = useState("all");
-  const { data, error, isLoading } = services();
+  const { data, error, isLoading } = productsData();
 
   const filterProducts = () => {
     // category
