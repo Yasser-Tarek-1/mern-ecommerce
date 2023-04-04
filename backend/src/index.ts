@@ -1,4 +1,4 @@
-import express, { Response } from "express";
+import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import path from "path";
 import morgan from "morgan";
@@ -16,10 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "./uploads"),
   filename: (req, file, cb) => {
-    const fileName = `${Date.now()} - ${file.originalname}`;
-    cb(null, fileName);
+    const filename = `${Date.now()}-${file.originalname}`;
+    cb(null, filename);
   },
 });
+
 const upload = multer({ storage });
 
 const port = process.env.PORT || 4000;
@@ -30,10 +31,10 @@ app.use(`${process.env.PREFIX_ROUTE}/user`, userRoutes);
 app.post(
   `${process.env.PREFIX_ROUTE}/upload`,
   upload.single("image"),
-  (req: express.Request, res: express.Response) =>
+  (req: Request, res: Response) =>
     res.status(200).send({
-      file: req.file?.originalname,
-      path: req.file?.path,
+      success: true,
+      message: "File uploaded successfully",
     })
 );
 

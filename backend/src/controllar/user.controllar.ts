@@ -26,13 +26,13 @@ export const loginUser = async (req: Request, res: Response) => {
   const user: any = await User.findOne({ email: req.body.email });
   if (!user) {
     return res.status(400).send({
-      error: "Invalid email or passord",
+      error: "Invalid email or password",
     });
   }
   const checkPassword = user && compareSync(req.body.password, user.password);
   if (!checkPassword) {
     return res.status(400).send({
-      error: "Invalid email or passord",
+      error: "Invalid email or password",
     });
   }
   const token = jwt.sign(

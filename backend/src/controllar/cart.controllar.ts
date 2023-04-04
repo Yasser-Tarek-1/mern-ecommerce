@@ -33,7 +33,7 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
       error: "Product already in cart!",
     });
   }
-  const newOrder = await new Cart({
+  const newOrder = new Cart({
     product: {
       _id: product._id,
       title: product.title,
@@ -51,7 +51,7 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
   });
 };
 
-export const removeOrder = async (req: AuthenticatedRequest, res: Response) => {
+export const removeOrder = async (req: AuthenticatedRequest, res: Response) => { 
   const checkExisted = await Cart.findOne({
     "user.email": req.user.email,
     "product._id": req.params.id,
