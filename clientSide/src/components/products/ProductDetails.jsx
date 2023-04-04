@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Stack,
+  Typography,
+  Box,
+  Tooltip,
+  IconButton,
+} from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useAddCartItemMutation } from "../store/rtk-query/cartApi";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useAddCartItemMutation } from "../../store/rtk-query/cartApi";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
@@ -47,16 +56,32 @@ const ProductDetails = ({ _id, image, title, price, description }) => {
           maxWidth: "370px",
         }}
       >
-        <Typography
-          component="h3"
+        <Box
           sx={{
-            fontSize: "26px",
-            textTransform: "capitalize",
-            fontWeight: "bold",
+            display: "flex",
+            justifyContent: "space-between",
           }}
         >
-          {title}
-        </Typography>
+          <Typography
+            component="h3"
+            sx={{
+              fontSize: "26px",
+              textTransform: "capitalize",
+              fontWeight: "bold",
+            }}
+          >
+            {title}
+          </Typography>
+          <Tooltip title="Add to favorite">
+            <IconButton>
+              <FavoriteIcon
+                sx={{
+                  color: "red",
+                }}
+              />
+            </IconButton>
+          </Tooltip>
+        </Box>
         <Typography
           component="p"
           sx={{

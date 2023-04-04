@@ -12,7 +12,7 @@ import {
 
 import ProductItem from "./ProductItem";
 
-import { productsData } from "../services";
+import { productsData } from "../../services";
 import { useState } from "react";
 
 const categories = ["all", "phones", "shoes", "headphones"];

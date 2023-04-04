@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { Box, Stack } from "@mui/material";
-import SignupForm from "../components/SignupForm";
+import SignupForm from "../components/auth/SignupForm";
 import { authBanner } from "../assets";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";

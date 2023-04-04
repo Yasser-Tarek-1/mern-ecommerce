@@ -4,12 +4,12 @@ import IconButton from "@mui/material/IconButton";
 
 import CloseIcon from "@mui/icons-material/Close";
 
-import DrawerLayout from "./DrawerLayout";
+import DrawerLayout from "../../layout/DrawerLayout";
 
 import { useState } from "react";
 import SearchItem from "./SearchItem";
 
-import { productsData } from "../services";
+import { productsData } from "../../services";
 
 const Search = ({ show, onSetShow }) => {
   const [search, setSearch] = useState("");
