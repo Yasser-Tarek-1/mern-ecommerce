@@ -2,25 +2,28 @@ import React, { useEffect } from "react";
 import {
   Stack,
   Typography,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
   IconButton,
+  ButtonGroup,
   Box,
+  Button,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 
-import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
-import { useRemoveCartItemMutation } from "../../store/rtk-query/cartApi";
+import {
+  useRemoveCartItemMutation,
+  useUpdateCartItemQuantityMutation,
+} from "../../store/rtk-query/cartApi";
 
-const CartItem = ({ onSetShow, title, quantity, price, image, _id }) => {
+const CartItem = ({ title, quantity, price, image, _id }) => {
   const [removeCartItem, { error, isError, data, isSuccess }] =
     useRemoveCartItemMutation();
 
+  const [updateCartItemQuantity] = useUpdateCartItemQuantityMutation();
+
   useEffect(() => {
     if (isError) {
+      r;
       toast.error(error.data.error);
     }
     if (isSuccess) {
@@ -28,74 +31,98 @@ const CartItem = ({ onSetShow, title, quantity, price, image, _id }) => {
     }
   }, [isError, isSuccess]);
 
-  const cartHandler = () => {
-    onSetShow(flase);
-  };
-
   const deleteHandler = () => {
     removeCartItem(_id);
   };
 
+  const updateQuantity = (type) => {
+    if (type === "increase") {
+      updateCartItemQuantity({
+        id: _id,
+        quantity: quantity + 1,
+      });
+    } else {
+      updateCartItemQuantity({
+        id: _id,
+        quantity: quantity > 1 ? quantity - 1 : quantity,
+      });
+    }
+  };
+
   return (
-    // <Link
-    //   to={`/products/${_id}`}
-    //   onClick={cartHandler}
-    //   style={{
-    //     textDecoration: "none",
-    //   }}
-    // >
-    <Card
+    <Stack
       sx={{
-        maxWidth: 345,
+        p: "6px 12px",
+        "&:hover": {
+          backgroundColor: "#9e9e9e12",
+        },
       }}
+      direction={"row"}
+      alignItems={"start"}
+      gap={2}
     >
-      <Box
-        //CardActionArea
-        sx={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-        }}
-      >
-        <CardMedia
-          component="img"
-          style={{ width: "150px" }}
-          image={image}
-          alt={title}
-        />
-        <CardContent sx={{ p: 0, pl: "12px", width: "100%" }}>
-          <Stack
-            direction="row"
-            justifyContent={"space-between"}
-            alignItems={"start"}
+      <Stack direction="row" alignItems="center" gap={2}>
+        <Box>
+          <img src={image} alt={title} style={{ width: "90px" }} />
+        </Box>
+        <Stack gap={1}>
+          {/*  */}
+          <Typography
+            sx={{
+              width: "100px",
+              textTransform: "capitalize",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              fontSize: "16px",
+            }}
           >
-            <Typography
-              component="h3"
+            {title}
+          </Typography>
+          {/*  */}
+          <ButtonGroup color="secondary" variant="outlined" size="small">
+            <Button
+              onClick={() => updateQuantity("decrease")}
               sx={{
-                width: "fit-content",
-                textTransform: "capitalize",
+                borderRadius: 0,
               }}
             >
-              {title}
-            </Typography>
-            <IconButton
-              aria-label="delete"
-              onClick={deleteHandler}
-              color="error"
+              -
+            </Button>
+            <Button
+              sx={{
+                cursor: "default",
+              }}
+              disableRipple
             >
-              <DeleteIcon />
-            </IconButton>
-          </Stack>
-          <Typography variant="body2" color="text.secondary" my={"4px"}>
-            *{quantity}
+              {quantity}
+            </Button>
+            <Button
+              onClick={() => updateQuantity("increase")}
+              sx={{
+                borderRadius: 0,
+              }}
+            >
+              +
+            </Button>
+          </ButtonGroup>
+          {/*  */}
+          <Typography sx={{ fontSize: "14px" }}>
+            {quantity} x{" "}
+            <Typography
+              sx={{ fontSize: "14px" }}
+              color="secondary"
+              component="span"
+            >
+              ${price}
+            </Typography>
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            ${price * quantity}
-          </Typography>
-        </CardContent>
-      </Box>
-    </Card>
-    // </Link>
+        </Stack>
+      </Stack>
+      <IconButton sx={{ p: 0 }} onClick={deleteHandler}>
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Stack>
   );
 };
 

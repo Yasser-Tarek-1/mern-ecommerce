@@ -5,8 +5,10 @@ import Home from "./pages/Home";
 import Root from "./Root";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
 
 import Protected from "./components/protectedRoute/Protected";
+import ProtectedProfile from "./components/protectedRoute/ProtectedProfile";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ export const router = createBrowserRouter([
       {
         path: "/products/:productId",
         element: <Product />,
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedProfile>
+            <Profile />
+          </ProtectedProfile>
+        ),
       },
     ],
   },

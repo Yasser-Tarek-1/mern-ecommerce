@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header from "./components/Header";
+import Header from "./components/header/Header";
 import Cart from "./components/cart/Cart";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
@@ -20,7 +20,11 @@ const Root = () => {
     <>
       <Cart show={showCart} onSetShow={setShowCart} cart={cart} />
       <Search show={showSearch} onSetShow={setShowSearch} />
-      <Favorite show={showFavorite} onSetShow={setShowFavorite} />
+      <Favorite
+        show={showFavorite}
+        onSetShow={setShowFavorite}
+        favoriteTest={cart}
+      />
 
       <Header
         cartLength={cart?.length}
