@@ -3,31 +3,41 @@ import { Box, Typography, TextField, Stack, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { login } from "../../store/slices/userLoginSlice";
 import { useDispatch } from "react-redux";
-import { register } from "../store/slices/userRegisterSlice";
 
-const SignupForm = () => {
+const LoginForm = () => {
+  // const [loginHandler, result] = useLoginHandlerMutation();
+
+  // if (result?.isError) {
+  //   alert(result.error.data.error);
+  // } else if (result?.isSuccess) {
+  //   alert(result.data.message);
+  // }
   const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
-      username: "",
       email: "",
       password: "",
-      phone: "remove this",
-      image: "remove this",
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Username is Required"),
-      email: Yup.string()
-        .email("Invalid email address.")
-        .required("No email provided."),
       password: Yup.string()
         .required("No password provided.")
         .min(6, "Password is too short."),
+      email: Yup.string()
+        .email("Invalid email address.")
+        .required("No email provided."),
     }),
+    // onSubmit: () => {
+    //   loginHandler(formik.values).then(({ error, data }) => {
+    //     if (error) console.log(error.data.error);
+    //     console.log(data.res.message);
+    //     localStorage.setItem("token", data.res.token);
+    //     localStorage.setItem("userId", data.res.userId);
+    //   });
     onSubmit: (values) => {
-      dispatch(register(values));
+      dispatch(login(values));
     },
   });
 
@@ -75,17 +85,6 @@ const SignupForm = () => {
             label="Username"
             variant="standard"
             color="secondary"
-            type="string"
-            name="username"
-            onChange={formik.handleChange}
-            value={formik.values.username}
-            error={formik.touched.username && Boolean(formik.errors.username)}
-            helperText={formik.touched.username && formik.errors.username}
-          />
-          <TextField
-            label="Email"
-            variant="standard"
-            color="secondary"
             type="email"
             name="email"
             onChange={formik.handleChange}
@@ -104,6 +103,7 @@ const SignupForm = () => {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
+
           <Stack width="100%" gap={1}>
             <Button
               width="100%"
@@ -111,7 +111,7 @@ const SignupForm = () => {
               color="secondary"
               type="submit"
             >
-              Sign Up
+              Login
             </Button>
             <Typography
               sx={{
@@ -119,14 +119,14 @@ const SignupForm = () => {
                 textAlign: "center",
               }}
             >
-              Do you have an account?{" "}
+              Don't have an account?{" "}
               <Link
-                to="/login"
+                to="/signup"
                 style={{
                   color: "#9c27b0",
                 }}
               >
-                Login
+                Sign Up
               </Link>
             </Typography>
           </Stack>
@@ -136,4 +136,4 @@ const SignupForm = () => {
   );
 };
 
-export default SignupForm;
+export default LoginForm;

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Header from "./components/Header";
-import Cart from "./components/Cart";
+import Cart from "./components/cart/Cart";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
-import Search from "./components/Search";
-import Favorite from "./components/Favorite";
+import Search from "./components/search/Search";
+import Favorite from "./components/favorite/Favorite";
 import { useGetCartItemsQuery } from "./store/rtk-query/cartApi";
 
 const Root = () => {

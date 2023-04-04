@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import { toast } from "react-toastify";
-import { useRemoveCartItemMutation } from "../store/rtk-query/cartApi";
+import { useRemoveCartItemMutation } from "../../store/rtk-query/cartApi";
 
 const CartItem = ({ onSetShow, title, quantity, price, image, _id }) => {
   const [removeCartItem, { error, isError, data, isSuccess }] =

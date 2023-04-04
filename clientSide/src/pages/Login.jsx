@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { Box, Stack } from "@mui/material";
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/auth/LoginForm";
 import { authBanner } from "../assets";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";

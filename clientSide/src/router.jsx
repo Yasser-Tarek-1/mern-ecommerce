@@ -6,7 +6,7 @@ import Root from "./Root";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
-import Protected from "./components/Protected";
+import Protected from "./components/protectedRoute/Protected";
 
 export const router = createBrowserRouter([
   {

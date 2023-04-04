@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useAddCartItemMutation } from "../store/rtk-query/cartApi";
+import { useAddCartItemMutation } from "../../store/rtk-query/cartApi";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 

@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 
 import CloseIcon from "@mui/icons-material/Close";
 
-import DrawerLayout from "./DrawerLayout";
+import DrawerLayout from "../../layout/DrawerLayout";
 import CartItem from "./CartItem";
 
 const Cart = ({ show, onSetShow, cart }) => {
