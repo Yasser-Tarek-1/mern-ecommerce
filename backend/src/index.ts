@@ -6,9 +6,9 @@ import { CONNECTION_DB } from "./db/Connection_DB";
 import productsRoutes from "./router/product.router";
 import cartRoutes from "./router/cart.router";
 import userRoutes from "./router/user.router";
-import uploadingRoutes from "./router/uploading.router";
 import cors from "cors";
-import { uploadingImageMiddleware } from "./middleware/uploadImg";
+import { uploadingMiddleware } from "./middleware/upload.middleware";
+import { uploading } from "./helpers/uploading";
 const app = express();
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -19,7 +19,7 @@ dotenv.config({ path: path.join(__dirname, ".env") });
 app.use(`${process.env.PREFIX_ROUTE}/products`, productsRoutes);
 app.use(`${process.env.PREFIX_ROUTE}/cart`, cartRoutes);
 app.use(`${process.env.PREFIX_ROUTE}/user`, userRoutes);
-// app.use(`${process.env.PREFIX_ROUTE}/upload`, uploadingImageMiddleware);
+app.use(`${process.env.PREFIX_ROUTE}/upload`, uploadingMiddleware, uploading);
 app.use("*", (_, res: Response) =>
   res.status(404).send({
     error: "Un handled Route",

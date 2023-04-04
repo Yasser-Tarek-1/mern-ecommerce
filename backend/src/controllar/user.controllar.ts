@@ -12,7 +12,7 @@ export const registerUser = async (req: Request, res: Response) => {
   if (checkExistedEmail) {
     return res.status(400).send({ error: "Email is used before..." });
   }
-  const newUser = await new User({
+  const newUser =  new User({
     ...req.body,
     password: hashSync(req.body.password, 10),
   });
