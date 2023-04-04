@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAddCartItemMutation } from "../store/rtk-query/cartApi";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 const ProductDetails = ({ _id, image, title, price, description }) => {
   const [quantity, setQuantity] = useState(1);
 
-  const [addCartItem] = useAddCartItemMutation();
+  const [addCartItem, { error, isError, data, isSuccess }] =
+    useAddCartItemMutation();
 
-  const addHandler = () => {
-    addCartItem({
-      _id,
-      title,
-      price,
-      description,
-      image,
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.data.error);
+    }
+    if (isSuccess) {
+      toast.success(data.message);
+    }
+  }, [isError, isSuccess]);
+
+  const addHandler = async () => {
+    await addCartItem({
+      product: _id,
       quantity,
     });
   };

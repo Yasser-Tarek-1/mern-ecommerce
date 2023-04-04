@@ -9,12 +9,12 @@ import DrawerLayout from "./DrawerLayout";
 import { useState } from "react";
 import SearchItem from "./SearchItem";
 
-import { services } from "../services";
+import { productsData } from "../services";
 
 const Search = ({ show, onSetShow }) => {
   const [search, setSearch] = useState("");
 
-  const { data, error, isLoading } = services();
+  const { data, error, isLoading } = productsData();
 
   const searchHandler = () => {
     if (search) {

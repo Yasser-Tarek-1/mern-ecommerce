@@ -24,7 +24,12 @@ import { toast } from "react-toastify";
 
 import { motion } from "framer-motion";
 
-const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
+const Header = ({
+  onSetShowCart,
+  onSetShowSearch,
+  onSetShowFavorite,
+  cartLength,
+}) => {
   const userToken = localStorage.getItem("userToken");
   const { token } = useSelector((state) => state.login);
 
@@ -179,7 +184,10 @@ const Header = ({ onSetShowCart, onSetShowSearch, onSetShowFavorite }) => {
                   transition={{ duration: 0.2 }}
                   onClick={() => onSetShowCart(true)}
                 >
-                  <Badge badgeContent={4} color="secondary">
+                  <Badge
+                    badgeContent={cartLength ? cartLength : 0}
+                    color="secondary"
+                  >
                     <ShoppingCartOutlinedIcon
                       sx={{
                         color: "white",
