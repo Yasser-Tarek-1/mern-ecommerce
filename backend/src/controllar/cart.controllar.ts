@@ -7,10 +7,7 @@ export const getCartItems = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
-  const cartItems: CartI[] | any = await Cart.find()
-    .populate("user")
-    .populate("product")
-    .exec();
+  const cartItems: CartI[] | any = await Cart.find().populate("user product");
   res.status(200).send({
     success: true,
     message: "Cart items are fetched successfully",
