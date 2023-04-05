@@ -6,6 +6,7 @@ import { CONNECTION_DB } from "./db/Connection_DB";
 import productsRoutes from "./router/product.router";
 import cartRoutes from "./router/cart.router";
 import userRoutes from "./router/user.router";
+import showImagesRoute from "./router/img.router";
 import cors from "cors";
 import { uploadingMiddleware } from "./middleware/upload.middleware";
 import { uploading } from "./helpers/uploading";
@@ -19,6 +20,7 @@ dotenv.config({ path: path.join(__dirname, ".env") });
 app.use(`${process.env.PREFIX_ROUTE}/products`, productsRoutes);
 app.use(`${process.env.PREFIX_ROUTE}/cart`, cartRoutes);
 app.use(`${process.env.PREFIX_ROUTE}/user`, userRoutes);
+app.use(`${process.env.PREFIX_ROUTE}/uploads`, showImagesRoute);
 app.use(`${process.env.PREFIX_ROUTE}/upload`, uploadingMiddleware, uploading);
 app.use("*", (_, res: Response) =>
   res.status(404).send({

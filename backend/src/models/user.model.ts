@@ -6,7 +6,7 @@ export interface UserI {
   password: string;
   username: string;
   phone: string;
-  image?: string;
+  image: string;
   createAt: Date;
 }
 export const validateUserFields = (payload: UserI) => {
@@ -19,6 +19,17 @@ export const validateUserFields = (payload: UserI) => {
   });
   return userSch.validate(payload);
 };
+export const validateUpdateUser = (payload: UserI) => {
+  let userSch = joi.object({
+    email: joi.string().email().required(),
+    username: joi.string().required(),
+    phone: joi.string().required(),
+    image: joi.string(),
+    password: joi.string(),
+  });
+  return userSch.validate(payload);
+};
+
 const userSchema = new Schema<UserI>({
   email: {
     type: String,
