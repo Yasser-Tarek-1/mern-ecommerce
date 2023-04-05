@@ -7,7 +7,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import DrawerLayout from "../../layout/DrawerLayout";
 import FavoriteItem from "./FavoriteItem";
 
-const Favorite = ({ show, onSetShow, favoriteTest }) => {
+import { heartSvg } from "../../assets";
+
+const Favorite = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
   return (
     <DrawerLayout open={show} setOpen={onSetShow}>
       <Stack justifyContent="space-between" sx={{ minHeight: "100vh" }}>
@@ -38,8 +40,8 @@ const Favorite = ({ show, onSetShow, favoriteTest }) => {
             alignContent="center"
             justifyContent="center"
           >
-            {favoriteTest?.length > 0 ? (
-              favoriteTest.map(({ product }) => {
+            {[].length > 0 ? (
+              [].map(({ product }) => {
                 return (
                   <FavoriteItem
                     onSetShow={onSetShow}
@@ -49,11 +51,17 @@ const Favorite = ({ show, onSetShow, favoriteTest }) => {
                 );
               })
             ) : (
-              <Box
+              <Stack
                 sx={{
-                  p: " 24px 12px",
+                  p: "60px 12px",
                 }}
+                alignItems={"center"}
               >
+                <img
+                  src={heartSvg}
+                  alt="heartSvg"
+                  style={{ maxWidth: "100%" }}
+                />
                 <Typography sx={{ mb: "6px", textTransform: "uppercase" }}>
                   Favorite is empty...
                 </Typography>
@@ -64,7 +72,7 @@ const Favorite = ({ show, onSetShow, favoriteTest }) => {
                 >
                   Go to products
                 </a>
-              </Box>
+              </Stack>
             )}
           </Stack>
         </Box>

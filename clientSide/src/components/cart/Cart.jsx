@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 
@@ -8,7 +8,19 @@ import DrawerLayout from "../../layout/DrawerLayout";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 
-const Cart = ({ show, onSetShow, cart }) => {
+import { cartSvg } from "../../assets";
+import { useGetCartItemsQuery } from "../../store/rtk-query/cartApi";
+
+const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
+  const { data } = useGetCartItemsQuery();
+  const cart = data?.cartItems;
+
+  useEffect(() => {
+    onSetCartAndFavoriteLength((prev) => {
+      return { ...prev, cart: cart?.length };
+    });
+  }, [cart]);
+
   const total = cart?.reduce(
     (cartTotal, item) => {
       const {
@@ -64,11 +76,13 @@ const Cart = ({ show, onSetShow, cart }) => {
                 );
               })
             ) : (
-              <Box
+              <Stack
                 sx={{
-                  p: " 24px 12px",
+                  p: "60px 12px",
                 }}
+                alignItems={"center"}
               >
+                <img src={cartSvg} alt="cartSvg" style={{ maxWidth: "100%" }} />
                 <Typography sx={{ mb: "6px", textTransform: "uppercase" }}>
                   Cart is empty...
                 </Typography>
@@ -79,11 +93,11 @@ const Cart = ({ show, onSetShow, cart }) => {
                 >
                   Go to products
                 </a>
-              </Box>
+              </Stack>
             )}
           </Stack>
         </Box>
-        <CartTotal totalCart={total} />
+        {cart?.length > 0 && <CartTotal totalCart={total} />}
       </Stack>
     </DrawerLayout>
   );

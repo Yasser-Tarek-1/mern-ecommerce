@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 const Banner = () => {
   return (
     <Box
+      // className="bg-sec"
       sx={{
         height: "100vh",
         background: "linear-gradient(to right, #9b55e5, #3e17d0)",

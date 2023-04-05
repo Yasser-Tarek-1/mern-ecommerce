@@ -11,6 +11,8 @@ import SearchItem from "./SearchItem";
 
 import { productsData } from "../../services";
 
+import { searchSvg } from "../../assets";
+
 const Search = ({ show, onSetShow }) => {
   const [search, setSearch] = useState("");
 
@@ -58,9 +60,21 @@ const Search = ({ show, onSetShow }) => {
           }}
         >
           {!search && (
-            <Typography>
-              Enter the name of what you want to search for...
-            </Typography>
+            <Stack
+              sx={{
+                p: "60px 12px",
+              }}
+              alignItems={"center"}
+            >
+              <img
+                src={searchSvg}
+                alt="searchSvg"
+                style={{ maxWidth: "100%" }}
+              />
+              <Typography sx={{ mb: "6px", textTransform: "uppercase" }}>
+                What are you looking for?
+              </Typography>
+            </Stack>
           )}
           {searchHandler().length === 0 && search ? (
             <Typography>Not available in the store...</Typography>

@@ -97,6 +97,7 @@ const ProductDetails = ({ _id, image, title, price, description }) => {
           sx={{
             fontSize: "20px",
             my: "10px",
+            textTransform: "capitalize",
           }}
         >
           {description}

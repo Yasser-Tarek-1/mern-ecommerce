@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Stack,
   Box,
@@ -11,27 +11,49 @@ import {
 import {
   useGetUserInfoQuery,
   useUpdateUserInfoMutation,
+  useUpdateUserImageMutation,
 } from "../store/rtk-query/userInfoApi";
 import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [file, setFile] = useState("");
   const { data, isLoading, isSuccess, isError, error } = useGetUserInfoQuery();
-  const [updateUserInfo] = useUpdateUserInfoMutation();
+  const [updateUserInfo, res] = useUpdateUserInfoMutation();
+  const [updateUserImage, respone] = useUpdateUserImageMutation();
   const user = data?.res?.user;
+
+  console.log(respone);
+
+  useEffect(() => {
+    if (res.isError || respone.isError) {
+      if (res.isError) {
+        toast.error(res.error.data.error);
+      }
+      if (respone.isError) {
+        toast.error(respone.error.data.error);
+      }
+      setEdit(true);
+    }
+    if (res.isSuccess && respone.isSuccess) {
+      toast.success(res.data.message);
+      setEdit(false);
+    }
+  }, [res.isError, res.isSuccess, respone.isSuccess, respone.isError]);
 
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is Required"),
     email: Yup.string()
       .email("Invalid email address.")
       .required("No email provided."),
-    password: Yup.string()
-      .required("No password provided.")
-      .min(6, "Password is too short."),
+    phone: Yup.string().required("No phone provided."),
+    // password: Yup.string()
+    //   .required("No password provided.")
+    //   .min(6, "Password is too short."),
   });
 
   return (
@@ -51,14 +73,18 @@ const Profile = () => {
           initialValues={{
             username: user?.username,
             email: user?.email,
-            password: user?.password,
-            image: "",
+            // password: user?.password,
+            image: user?.image,
+            phone: user?.phone,
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            updateUserInfo(); // => this in rtk query => ابعتلك اي فيها بقي ؟؟؟
-            console.log(values); // => دي كل البيانات ماعدا الصوره
-            console.log(file); // => دي الصوره لوحدها في اوبجكت
+            if (file) {
+              const formData = new FormData();
+              formData.append("image", file);
+              updateUserImage(formData);
+            }
+            updateUserInfo(values);
           }}
         >
           {({
@@ -68,6 +94,7 @@ const Profile = () => {
             handleChange,
             handleBlur,
             handleSubmit,
+            setValues,
           }) => (
             <form
               onSubmit={handleSubmit}
@@ -95,7 +122,11 @@ const Profile = () => {
                   name="image"
                   id="image"
                   className="inputfile"
-                  onChange={(e) => setFile(e.currentTarget.files[0])}
+                  onChange={(e) => {
+                    const fileImage = e.target.files[0];
+                    setFile(fileImage);
+                    setValues({ ...values, image: fileImage.name });
+                  }}
                   disabled={!edit}
                 />
                 <IconButton disabled={!edit} color="secondary">
@@ -157,20 +188,40 @@ const Profile = () => {
                   gap={3}
                   justifyContent={"space-between"}
                 >
+                  <Typography>Phone:</Typography>
+                  <TextField
+                    disabled={!edit}
+                    name="phone"
+                    sx={{ width: "80%" }}
+                    color="secondary"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.phone}
+                    error={touched.phone && Boolean(errors.phone)}
+                    helperText={touched.phone && errors.phone}
+                  />
+                </Stack>
+                {/* <Stack
+                  direction="row"
+                  alignItems="center"
+                  gap={3}
+                  justifyContent={"space-between"}
+                >
                   <Typography>Password:</Typography>
                   <TextField
                     disabled={!edit}
                     name="password"
                     sx={{ width: "80%" }}
                     color="secondary"
-                    type="password"
+                    // type="password"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.password}
                     error={touched.password && Boolean(errors.password)}
                     helperText={touched.password && errors.password}
                   />
-                </Stack>
+                </Stack> */}
                 <Stack
                   mt={2}
                   direction="row"

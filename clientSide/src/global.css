@@ -28,3 +28,7 @@ body {
   position: absolute;
   z-index: -1;
 }
+
+.bg-sec {
+  background-image: url("./assets/sec.jpg") !important;
+}
