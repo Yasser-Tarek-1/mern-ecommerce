@@ -13,6 +13,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useAddCartItemMutation } from "../../store/rtk-query/cartApi";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const ProductDetails = ({ _id, image, title, price, description }) => {
   const [quantity, setQuantity] = useState(1);
@@ -96,59 +97,76 @@ const ProductDetails = ({ _id, image, title, price, description }) => {
           sx={{
             fontSize: "20px",
             my: "10px",
+            textTransform: "capitalize",
           }}
         >
           {description}
         </Typography>
         <Stack direction="row" gap={1} mt="20px">
-          <ButtonGroup
-            color="secondary"
-            variant="outlined"
-            aria-label="outlined button group"
-          >
-            <Button
-              onClick={() =>
-                setQuantity((prev) => {
-                  return prev > 1 ? prev - 1 : 1;
-                })
-              }
-              sx={{
-                borderRadius: 0,
+          {localStorage.getItem("userToken") ? (
+            <>
+              <ButtonGroup
+                color="secondary"
+                variant="outlined"
+                aria-label="outlined button group"
+              >
+                <Button
+                  onClick={() =>
+                    setQuantity((prev) => {
+                      return prev > 1 ? prev - 1 : 1;
+                    })
+                  }
+                  sx={{
+                    borderRadius: 0,
+                  }}
+                >
+                  -
+                </Button>
+                <Button
+                  sx={{
+                    cursor: "default",
+                  }}
+                  disableRipple
+                >
+                  {quantity}
+                </Button>
+                <Button
+                  sx={{
+                    borderRadius: 0,
+                  }}
+                  onClick={() => setQuantity(quantity + 1)}
+                >
+                  +
+                </Button>
+              </ButtonGroup>
+
+              <Button
+                component={motion.button}
+                whileTap={{ scale: 0.9 }}
+                transition={{ duration: 0.2 }}
+                onClick={addHandler}
+                sx={{
+                  borderRadius: 0,
+                }}
+                color="secondary"
+                variant="contained"
+                endIcon={<ShoppingCartIcon />}
+              >
+                Add to Cart
+              </Button>
+            </>
+          ) : (
+            <Link
+              to={"/login"}
+              style={{
+                color: "#000",
+                fontSize: "18px",
+                letterSpacing: "1px",
               }}
             >
-              -
-            </Button>
-            <Button
-              sx={{
-                cursor: "default",
-              }}
-              disableRipple
-            >
-              {quantity}
-            </Button>
-            <Button
-              sx={{
-                borderRadius: 0,
-              }}
-              onClick={() => setQuantity(quantity + 1)}
-            >
-              +
-            </Button>
-          </ButtonGroup>
-          <Button
-            component={motion.button}
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.2 }}
-            onClick={addHandler}
-            sx={{
-              borderRadius: 0,
-            }}
-            color="secondary"
-            variant="contained"
-            endIcon={<ShoppingCartIcon />}
-          >
-            Add to Cart
-          </Button>
+              Please login first...
+            </Link>
+          )}
         </Stack>
       </Stack>
     </Stack>

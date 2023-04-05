@@ -7,8 +7,11 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const ProductItem = ({ _id, title, price, image, description }) => {
+  const scrollHandler = () => {
+    window.scrollTo(0, 0);
+  };
   return (
-    <Box sx={{ width: 240 }}>
+    <Box sx={{ width: 240 }} onClick={scrollHandler}>
       <Link
         to={`/products/${_id}`}
         style={{
