@@ -209,18 +209,20 @@ const Header = (props) => {
                 </>
               )}
             </Box>
-            <Link to="/profile">
-              <Tooltip title="Profile">
-                <IconButton
-                  component={motion.button}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
-                  sx={{ px: "2px" }}
-                >
-                  <Avatar alt="Profile" sx={{ width: 32, height: 32 }} />
-                </IconButton>
-              </Tooltip>
-            </Link>
+            {userToken && token && (
+              <Link to="/profile">
+                <Tooltip title="Profile">
+                  <IconButton
+                    component={motion.button}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ duration: 0.2 }}
+                    sx={{ px: "2px" }}
+                  >
+                    <Avatar alt="Profile" sx={{ width: 32, height: 32 }} />
+                  </IconButton>
+                </Tooltip>
+              </Link>
+            )}
             <Button
               component={motion.button}
               whileTap={{ scale: 0.9 }}

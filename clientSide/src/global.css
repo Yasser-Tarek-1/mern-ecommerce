@@ -20,7 +20,11 @@ body {
   font-weight: 400;
 }
 
-.link-hover:hover {
-  color: #9c27b0 !important;
-  transition: all 0.2s;
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }

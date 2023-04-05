@@ -6,44 +6,32 @@ import {
   Typography,
   TextField,
   Button,
+  IconButton,
 } from "@mui/material";
-import { useGetUserInfoQuery } from "../store/rtk-query/userInfoApi";
+import {
+  useGetUserInfoQuery,
+  useUpdateUserInfoMutation,
+} from "../store/rtk-query/userInfoApi";
 import { useState } from "react";
-import { useFormik } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
-import { useEffect } from "react";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
-  const [user, setUser] = useState({});
+  const [file, setFile] = useState("");
   const { data, isLoading, isSuccess, isError, error } = useGetUserInfoQuery();
+  const [updateUserInfo] = useUpdateUserInfoMutation();
+  const user = data?.res?.user;
 
-  useEffect(() => {
-    if (data?.res) {
-      setUser(data?.res?.user);
-    }
-  }, [data]);
-
-  // formik
-  const formik = useFormik({
-    initialValues: {
-      username: user?.username,
-      email: user?.email,
-      password: user?.password,
-      image: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string().required("Username is Required"),
-      email: Yup.string()
-        .email("Invalid email address.")
-        .required("No email provided."),
-      password: Yup.string()
-        .required("No password provided.")
-        .min(6, "Password is too short."),
-    }),
-    onSubmit: (values) => {
-      console.log(values);
-    },
+  const validationSchema = Yup.object({
+    username: Yup.string().required("Username is Required"),
+    email: Yup.string()
+      .email("Invalid email address.")
+      .required("No email provided."),
+    password: Yup.string()
+      .required("No password provided.")
+      .min(6, "Password is too short."),
   });
 
   return (
@@ -58,15 +46,31 @@ const Profile = () => {
     >
       {isError && <Typography>{error}</Typography>}
       {isLoading && <Typography>Loading...</Typography>}
-      {isSuccess && (
-        <>
-          <Box>
-            <Avatar src={""} sx={{ width: "220px", height: "220px" }} />
-          </Box>
-          <Box sx={{ p: "16px", backgroundColor: "#9e9e9e21", width: "680px" }}>
-            <Typography sx={{ fontSize: "20px" }}>User Info</Typography>
+      {isSuccess && Object.keys(user).length > 0 && (
+        <Formik
+          initialValues={{
+            username: user?.username,
+            email: user?.email,
+            password: user?.password,
+            image: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            updateUserInfo(); // => this in rtk query => ابعتلك اي فيها بقي ؟؟؟
+            console.log(values); // => دي كل البيانات ماعدا الصوره
+            console.log(file); // => دي الصوره لوحدها في اوبجكت
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+          }) => (
             <form
-              onSubmit={formik.handleSubmit}
+              onSubmit={handleSubmit}
               style={{
                 padding: "16px",
                 width: "full",
@@ -74,93 +78,128 @@ const Profile = () => {
                 gap: "16px",
               }}
             >
-              <Stack
-                direction="row"
-                alignItems="center"
-                gap={3}
-                justifyContent={"space-between"}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "end",
+                  mb: "32px",
+                }}
               >
-                <Typography>Username:</Typography>
-                <TextField
-                  disabled={!edit}
-                  sx={{ width: "80%" }}
-                  color="secondary"
-                  name="username"
-                  onChange={formik.handleChange}
-                  value={formik.values.username}
-                  error={
-                    formik.touched.username && Boolean(formik.errors.username)
-                  }
-                  helperText={formik.touched.username && formik.errors.username}
+                <Avatar
+                  src={(file && URL.createObjectURL(file)) || user?.image}
+                  sx={{ width: "220px", height: "220px", boxShadow: 2 }}
                 />
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                gap={3}
-                justifyContent={"space-between"}
-              >
-                <Typography>Email:</Typography>
-                <TextField
+                <input
+                  type="file"
+                  name="image"
+                  id="image"
+                  className="inputfile"
+                  onChange={(e) => setFile(e.currentTarget.files[0])}
                   disabled={!edit}
-                  name="email"
-                  sx={{ width: "80%" }}
-                  color="secondary"
-                  onChange={formik.handleChange}
-                  value={formik.values.email}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email && formik.errors.email}
                 />
-              </Stack>
+                <IconButton disabled={!edit} color="secondary">
+                  <label htmlFor="image">
+                    <CameraAltIcon />
+                  </label>
+                </IconButton>
+              </Box>
               <Stack
-                direction="row"
-                alignItems="center"
-                gap={3}
-                justifyContent={"space-between"}
+                gap={2}
+                sx={{
+                  backgroundColor: "#9e9e9e21",
+                  p: "16px",
+                  width: "680px",
+                }}
               >
-                <Typography>Password:</Typography>
-                <TextField
-                  disabled={!edit}
-                  name="password"
-                  sx={{ width: "80%" }}
-                  color="secondary"
-                  type="password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password}
-                  error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                  }
-                  helperText={formik.touched.password && formik.errors.password}
-                />
-              </Stack>
-              <Stack
-                mt={2}
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Button type="button" variant="contained" color="error">
-                  Delete Acc
-                </Button>
-                {!edit && (
-                  <Button
-                    type="button"
-                    variant="contained"
+                <Typography sx={{ fontSize: "20px" }}>User Info</Typography>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  gap={3}
+                  justifyContent={"space-between"}
+                >
+                  <Typography>Username:</Typography>
+                  <TextField
+                    disabled={!edit}
+                    sx={{ width: "80%" }}
                     color="secondary"
-                    onClick={() => setEdit(true)}
-                  >
-                    Edit
+                    name="username"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.username}
+                    error={touched.username && Boolean(errors.username)}
+                    helperText={touched.username && errors.username}
+                  />
+                </Stack>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  gap={3}
+                  justifyContent={"space-between"}
+                >
+                  <Typography>Email:</Typography>
+                  <TextField
+                    disabled={!edit}
+                    name="email"
+                    sx={{ width: "80%" }}
+                    color="secondary"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
+                    error={touched.email && Boolean(errors.email)}
+                    helperText={touched.email && errors.email}
+                  />
+                </Stack>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  gap={3}
+                  justifyContent={"space-between"}
+                >
+                  <Typography>Password:</Typography>
+                  <TextField
+                    disabled={!edit}
+                    name="password"
+                    sx={{ width: "80%" }}
+                    color="secondary"
+                    type="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                    error={touched.password && Boolean(errors.password)}
+                    helperText={touched.password && errors.password}
+                  />
+                </Stack>
+                <Stack
+                  mt={2}
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Button type="button" variant="contained" color="error">
+                    Delete Acc
                   </Button>
-                )}
-                {edit && (
-                  <Button type="submit" variant="contained" color="secondary">
-                    Save
-                  </Button>
-                )}
+                  {!edit && (
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => setEdit(true)}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                  {edit && (
+                    <Button type="submit" variant="contained" color="secondary">
+                      Save
+                    </Button>
+                  )}
+                </Stack>
               </Stack>
             </form>
-          </Box>
-        </>
+          )}
+        </Formik>
       )}
     </Stack>
   );
