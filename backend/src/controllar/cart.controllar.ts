@@ -2,47 +2,41 @@ import { Response } from "express";
 import { AuthenticatedRequest } from "../middleware/auth";
 import { Cart, CartI } from "../models/cart.model";
 import Product from "../models/Products.model";
-import { User } from "../models/user.model";
+
 export const getCartItems = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
-  const cartItems: CartI[] | any = await Cart.find({
-    "user.email": req.user.email,
-  });
+  const cartItems: CartI[] | any = await Cart.find()
+    .populate("user")
+    .populate("product")
+    .exec();
   res.status(200).send({
     success: true,
-    message: "fetched your cart item successfully",
+    message: "Cart items are fetched successfully",
     cartItems,
   });
 };
 export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
-  const product = await Product.findById(req.body.product);
-  const user = await User.findById(req.user._id);
-  if (!product || !user) {
-    return res.status(400).send({
-      error: "Your request failed!",
-    });
-  }
-  const checkingExisted = await Cart.findOne({
-    "product.title": product.title,
-    "user.email": user.email,
-  });
-  if (checkingExisted) {
-    return res.status(400).send({
-      error: "Product already in cart!",
-    });
-  }
-  const newOrder = await new Cart({
-    product: {
-      _id: product._id,
-      title: product.title,
-      image: product.image,
-      description: product.description,
-      price: product.price,
-      quantity: req.body.quantity,
-    },
-    user,
+  // const product = await Product.findById(req.body.product);
+  // if (!product || !user) {
+  //   return res.status(400).send({
+  //     error: "Your request failed!",
+  //   });
+  // }
+  // const checkingExisted = await Cart.findOne({
+  //   "product._id": req.body.product,
+  //   "user._id": req.user,
+  // });
+  // if (checkingExisted) {
+  //   return res.status(400).send({
+  //     error: "Product already in cart!",
+  //   });
+  // }
+  const newOrder = new Cart({
+    product: req.body.product,
+    quantity: req.body.quantity,
+    user: req.user._id,
   });
   newOrder.save();
   res.status(200).send({
@@ -53,8 +47,9 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
 
 export const removeOrder = async (req: AuthenticatedRequest, res: Response) => {
   const checkExisted = await Cart.findOne({
-    "user.email": req.user.email,
-    "product._id": req.params.id,
+    _id: req.params.id,
+    // "user.email": req.user.email,
+    // "product._id": req.params.id,
   });
   if (!checkExisted) {
     return res.status(400).send({
@@ -62,8 +57,9 @@ export const removeOrder = async (req: AuthenticatedRequest, res: Response) => {
     });
   }
   await Cart.findOneAndRemove({
-    "user.email": req.user.email,
-    "product._id": req.params.id,
+    // "user.email": req.user.email,
+    // "product._id": req.params.id,
+    _id: req.params.id,
   });
   res.status(200).send({
     success: true,
