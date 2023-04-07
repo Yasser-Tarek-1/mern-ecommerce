@@ -6,7 +6,7 @@ export interface FavouritesI {
 const favouritesSchema = new Schema({
   product: {
     type: Schema.Types.ObjectId,
-    ref: "productF",
+    ref: "product",
   },
   user: {
     type: Schema.Types.ObjectId,
