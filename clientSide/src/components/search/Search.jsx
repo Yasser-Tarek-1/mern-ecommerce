@@ -12,17 +12,22 @@ import SearchItem from "./SearchItem";
 import { productsData } from "../../services";
 
 import { searchSvg } from "../../assets";
+import { RotatingLines } from "react-loader-spinner";
 
 const Search = ({ show, onSetShow }) => {
   const [search, setSearch] = useState("");
 
-  const { data, error, isLoading } = productsData();
+  const { data, isLoading } = productsData();
 
   const searchHandler = () => {
     if (search) {
-      return data?.products.filter((product) => {
-        return product.title.includes(search);
-      });
+      if (data) {
+        return data?.products.filter((product) => {
+          return product.title.includes(search);
+        });
+      } else {
+        return [];
+      }
     }
     return [];
   };
@@ -35,7 +40,6 @@ const Search = ({ show, onSetShow }) => {
           justifyContent="space-between"
           alignItems="center"
           gap={16}
-          // borderBottom="1px solid gray"
         >
           <Input
             placeholder="Search for products..."
@@ -59,6 +63,18 @@ const Search = ({ show, onSetShow }) => {
             },
           }}
         >
+          {search && isLoading && (
+            <Stack alignItems="center">
+              <RotatingLines
+                strokeColor="#9c27b0"
+                strokeWidth="5"
+                animationDuration="0.75"
+                width="96"
+                visible={true}
+              />
+            </Stack>
+          )}
+
           {!search && (
             <Stack
               sx={{
@@ -76,6 +92,7 @@ const Search = ({ show, onSetShow }) => {
               </Typography>
             </Stack>
           )}
+
           {searchHandler().length === 0 && search ? (
             <Typography>Not available in the store...</Typography>
           ) : (

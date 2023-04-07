@@ -1,9 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 const Protected = ({ children }) => {
   const userToken = localStorage.getItem("userToken");
+  const { token } = useSelector((state) => state.login);
 
-  if (userToken) {
+  if (token && userToken) {
     return <Navigate to="/" replace />;
   }
 

@@ -23,7 +23,6 @@ const CartItem = ({ title, quantity, price, image, _id }) => {
 
   useEffect(() => {
     if (isError) {
-      r;
       toast.error(error.data.error);
     }
     if (isSuccess) {

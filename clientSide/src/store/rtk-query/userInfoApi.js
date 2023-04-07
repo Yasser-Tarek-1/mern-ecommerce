@@ -24,9 +24,9 @@ export const userInfoApi = createApi({
       }),
       invalidatesTags: ["UserInfo"],
     }),
-    updateUserImage: builder.mutation({
+    userImage: builder.mutation({
       query: (body) => ({
-        url: `/upload`,
+        url: `/onlineStore/upload`,
         method: "POST",
         body,
       }),
@@ -38,5 +38,5 @@ export const userInfoApi = createApi({
 export const {
   useGetUserInfoQuery,
   useUpdateUserInfoMutation,
-  useUpdateUserImageMutation,
+  useUserImageMutation,
 } = userInfoApi;

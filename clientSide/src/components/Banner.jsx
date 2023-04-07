@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 const Banner = () => {
   return (
     <Box
-      // className="bg-sec"
       sx={{
         height: "100vh",
         background: "linear-gradient(to right, #9b55e5, #3e17d0)",
@@ -22,7 +21,6 @@ const Banner = () => {
     >
       <Stack
         sx={{
-          //   maxWidth: "1000px",
           justifyContent: "center",
           alignItems: "center",
           flexDirection: {
@@ -78,40 +76,31 @@ const Banner = () => {
             can browse the products and buy what you want
           </Typography>
           <Stack direction="row" justifyContent="center" gap={3}>
-            {/* <Button
-              sx={{
-                color: "white",
-                border: "1px solid white",
-                p: "10px 24px",
+            <a
+              href="/#products"
+              style={{
+                color: "#000",
+                textDecoration: "none",
               }}
             >
-              Read More
-            </Button> */}
-            <Button
-              component={motion.button}
-              whileTap={{ scale: 0.9 }}
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2 }}
-              sx={{
-                color: "black",
-                border: "1px solid white",
-                backgroundColor: "white",
-                p: "10px 24px",
-                "&:hover": {
+              <Button
+                component={motion.button}
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.2 }}
+                sx={{
+                  color: "black",
+                  border: "1px solid white",
                   backgroundColor: "white",
-                },
-              }}
-            >
-              <a
-                href="/#products"
-                style={{
-                  color: "#000",
-                  textDecoration: "none",
+                  p: "10px 24px",
+                  "&:hover": {
+                    backgroundColor: "white",
+                  },
                 }}
               >
                 Shop Now
-              </a>
-            </Button>
+              </Button>
+            </a>
           </Stack>
         </Box>
         <Box

@@ -7,27 +7,30 @@ import {
   TextField,
   Button,
   IconButton,
+  Alert,
 } from "@mui/material";
 import {
   useGetUserInfoQuery,
   useUpdateUserInfoMutation,
-  useUpdateUserImageMutation,
+  useUserImageMutation,
 } from "../store/rtk-query/userInfoApi";
 import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { toast } from "react-toastify";
+import { RotatingLines } from "react-loader-spinner";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [file, setFile] = useState("");
+  // rtk-query
   const { data, isLoading, isSuccess, isError, error } = useGetUserInfoQuery();
   const [updateUserInfo, res] = useUpdateUserInfoMutation();
-  const [updateUserImage, respone] = useUpdateUserImageMutation();
+  const [userImage, respone] = useUserImageMutation();
   const user = data?.res?.user;
 
-  console.log(respone);
+  // console.log(res); // error response
 
   useEffect(() => {
     if (res.isError || respone.isError) {
@@ -39,7 +42,8 @@ const Profile = () => {
       }
       setEdit(true);
     }
-    if (res.isSuccess && respone.isSuccess) {
+    if (res.isSuccess && (!respone.isSuccess || respone.isUninitialized)) {
+      // change this when the response work
       toast.success(res.data.message);
       setEdit(false);
     }
@@ -51,9 +55,9 @@ const Profile = () => {
       .email("Invalid email address.")
       .required("No email provided."),
     phone: Yup.string().required("No phone provided."),
-    // password: Yup.string()
-    //   .required("No password provided.")
-    //   .min(6, "Password is too short."),
+    password: Yup.string()
+      .required("No password provided.")
+      .min(6, "Password is too short."),
   });
 
   return (
@@ -66,23 +70,32 @@ const Profile = () => {
       }}
       gap={5}
     >
-      {isError && <Typography>{error}</Typography>}
-      {isLoading && <Typography>Loading...</Typography>}
+      {isLoading && (
+        <Stack alignItems="center" mt={20}>
+          <RotatingLines
+            strokeColor="#9c27b0"
+            strokeWidth="5"
+            animationDuration="0.75"
+            width="96"
+            visible={true}
+          />
+        </Stack>
+      )}
       {isSuccess && Object.keys(user).length > 0 && (
         <Formik
           initialValues={{
             username: user?.username,
             email: user?.email,
-            // password: user?.password,
-            image: user?.image,
+            password: "123123",
             phone: user?.phone,
+            image: user?.image,
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
             if (file) {
               const formData = new FormData();
               formData.append("image", file);
-              updateUserImage(formData);
+              userImage(formData);
             }
             updateUserInfo(values);
           }}
@@ -129,8 +142,13 @@ const Profile = () => {
                   }}
                   disabled={!edit}
                 />
-                <IconButton disabled={!edit} color="secondary">
-                  <label htmlFor="image">
+                <IconButton disabled={!edit} color="secondary" sx={{ p: 0 }}>
+                  <label
+                    htmlFor="image"
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  >
                     <CameraAltIcon />
                   </label>
                 </IconButton>
@@ -140,7 +158,10 @@ const Profile = () => {
                 sx={{
                   backgroundColor: "#9e9e9e21",
                   p: "16px",
-                  width: "680px",
+                  width: {
+                    xs: "100%",
+                    sm: "550px",
+                  },
                 }}
               >
                 <Typography sx={{ fontSize: "20px" }}>User Info</Typography>
@@ -202,7 +223,7 @@ const Profile = () => {
                     helperText={touched.phone && errors.phone}
                   />
                 </Stack>
-                {/* <Stack
+                <Stack
                   direction="row"
                   alignItems="center"
                   gap={3}
@@ -214,14 +235,14 @@ const Profile = () => {
                     name="password"
                     sx={{ width: "80%" }}
                     color="secondary"
-                    // type="password"
+                    type="password"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.password}
                     error={touched.password && Boolean(errors.password)}
                     helperText={touched.password && errors.password}
                   />
-                </Stack> */}
+                </Stack>
                 <Stack
                   mt={2}
                   direction="row"
@@ -251,6 +272,11 @@ const Profile = () => {
             </form>
           )}
         </Formik>
+      )}
+      {isError && (
+        <Alert severity="error">
+          Problem displaying User Info, Please try later
+        </Alert>
       )}
     </Stack>
   );

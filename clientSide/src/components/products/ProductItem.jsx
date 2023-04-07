@@ -6,7 +6,7 @@ import { CardActionArea } from "@mui/material";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const ProductItem = ({ _id, title, price, image, description }) => {
+const ProductItem = ({ _id, title, price, image }) => {
   const scrollHandler = () => {
     window.scrollTo(0, 0);
   };
