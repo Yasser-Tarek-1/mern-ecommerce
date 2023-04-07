@@ -24,7 +24,9 @@ const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
   const total = cart?.reduce(
     (cartTotal, item) => {
       const {
-        product: { price, quantity },
+        //    product: { price ,quantity},
+        product: { price },
+        quantity,
       } = item;
       const itemTotal = price * quantity;
       cartTotal.total += itemTotal;
@@ -66,12 +68,13 @@ const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
             justifyContent="center"
           >
             {cart?.length > 0 ? (
-              cart.map(({ product }) => {
+              cart.map(({ product, quantity }) => {
                 return (
                   <CartItem
                     onSetShow={onSetShow}
                     key={product._id}
                     {...product}
+                    quantity={quantity}
                   />
                 );
               })

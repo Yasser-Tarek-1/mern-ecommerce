@@ -15,10 +15,14 @@ import { useDispatch } from "react-redux";
 import { register } from "../../store/slices/userRegisterSlice";
 import { useState } from "react";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { useUserImageMutation } from "../../store/rtk-query/userInfoApi";
 
 const SignupForm = () => {
   const dispatch = useDispatch();
   const [file, setFile] = useState("");
+  const [userImage, response] = useUserImageMutation();
+
+  console.log(response); // image uploads but response get error
 
   const formik = useFormik({
     initialValues: {
@@ -39,9 +43,12 @@ const SignupForm = () => {
       phone: Yup.string().required("No phone provided."),
     }),
     onSubmit: (values) => {
-      // dispatch(register(values));
-      console.log(values);
-      console.log(file);
+      if (file) {
+        const formData = new FormData();
+        formData.append("image", file);
+        userImage(formData);
+      }
+      dispatch(register(values));
     },
   });
 
@@ -102,7 +109,11 @@ const SignupForm = () => {
               name="image"
               id="image"
               className="inputfile"
-              onChange={(e) => setFile(e.currentTarget.files[0])}
+              onChange={(e) => {
+                const fileImage = e.target.files[0];
+                setFile(fileImage);
+                formik.setValues({ ...formik.values, image: fileImage.name });
+              }}
             />
 
             <label htmlFor="image" style={{ cursor: "pointer" }}>

@@ -14,6 +14,7 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { logOut } from "./store/slices/userLoginSlice";
 import { SpeedDial, SpeedDialAction, Badge } from "@mui/material";
+import { motion } from "framer-motion";
 
 const Root = () => {
   const [open, setOpen] = useState(false);
@@ -110,6 +111,9 @@ const Root = () => {
               }
               tooltipTitle={action.name}
               onClick={() => speedHandler(action.name)}
+              component={motion.button}
+              whileTap={{ scale: 0.9 }}
+              transition={{ duration: 0.2 }}
             />
           ))}
         </SpeedDial>

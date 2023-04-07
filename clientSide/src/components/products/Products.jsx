@@ -43,7 +43,6 @@ const Products = () => {
           component="h3"
           mb={6}
           data-aos="fade-right"
-          // data-aos-delay="50"
           data-aos-duration="750"
         >
           Products

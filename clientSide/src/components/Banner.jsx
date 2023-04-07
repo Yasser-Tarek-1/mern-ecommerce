@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 const Banner = () => {
   return (
     <Box
-      // className="bg-sec"
       sx={{
         height: "100vh",
         background: "linear-gradient(to right, #9b55e5, #3e17d0)",
@@ -22,7 +21,6 @@ const Banner = () => {
     >
       <Stack
         sx={{
-          //   maxWidth: "1000px",
           justifyContent: "center",
           alignItems: "center",
           flexDirection: {
@@ -78,15 +76,6 @@ const Banner = () => {
             can browse the products and buy what you want
           </Typography>
           <Stack direction="row" justifyContent="center" gap={3}>
-            {/* <Button
-              sx={{
-                color: "white",
-                border: "1px solid white",
-                p: "10px 24px",
-              }}
-            >
-              Read More
-            </Button> */}
             <Button
               component={motion.button}
               whileTap={{ scale: 0.9 }}

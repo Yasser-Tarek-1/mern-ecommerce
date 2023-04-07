@@ -7,7 +7,6 @@ import authBanner from "./auth-banner.svg";
 import cartSvg from "./cart.svg";
 import heartSvg from "./heart.svg";
 import searchSvg from "./search.svg";
-import heroSec from "./hero-sec.jpg";
 
 export {
   banner,
@@ -19,5 +18,4 @@ export {
   cartSvg,
   heartSvg,
   searchSvg,
-  heroSec,
 };

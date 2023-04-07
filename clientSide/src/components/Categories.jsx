@@ -25,7 +25,6 @@ const Categories = () => {
             data-aos={
               idx === 0 ? "fade-right" : idx === 1 ? "fade-up" : "fade-left"
             }
-            // data-aos-delay="50"
             data-aos-duration="750"
             key={title}
             sx={{
