@@ -3,4 +3,15 @@ export interface FavouritesI {
   product: Schema.Types.ObjectId;
   user: Schema.Types.ObjectId;
 }
- 
+const favouritesSchema = new Schema({
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: "productF",
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
+});
+
+export const Favourite = model("favourite", favouritesSchema);
