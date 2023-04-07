@@ -142,8 +142,13 @@ const Profile = () => {
                   }}
                   disabled={!edit}
                 />
-                <IconButton disabled={!edit} color="secondary">
-                  <label htmlFor="image">
+                <IconButton disabled={!edit} color="secondary" sx={{ p: 0 }}>
+                  <label
+                    htmlFor="image"
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  >
                     <CameraAltIcon />
                   </label>
                 </IconButton>

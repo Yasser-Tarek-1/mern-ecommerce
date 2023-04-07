@@ -86,7 +86,7 @@ const Root = () => {
             position: "fixed",
             bottom: 32,
             right: 32,
-            color: "red",
+            color: "#fff",
           }}
           icon={<SpeedDialIcon color="secondary" />}
           FabProps={{

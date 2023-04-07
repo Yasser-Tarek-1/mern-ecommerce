@@ -76,31 +76,31 @@ const Banner = () => {
             can browse the products and buy what you want
           </Typography>
           <Stack direction="row" justifyContent="center" gap={3}>
-            <Button
-              component={motion.button}
-              whileTap={{ scale: 0.9 }}
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2 }}
-              sx={{
-                color: "black",
-                border: "1px solid white",
-                backgroundColor: "white",
-                p: "10px 24px",
-                "&:hover": {
-                  backgroundColor: "white",
-                },
+            <a
+              href="/#products"
+              style={{
+                color: "#000",
+                textDecoration: "none",
               }}
             >
-              <a
-                href="/#products"
-                style={{
-                  color: "#000",
-                  textDecoration: "none",
+              <Button
+                component={motion.button}
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.2 }}
+                sx={{
+                  color: "black",
+                  border: "1px solid white",
+                  backgroundColor: "white",
+                  p: "10px 24px",
+                  "&:hover": {
+                    backgroundColor: "white",
+                  },
                 }}
               >
                 Shop Now
-              </a>
-            </Button>
+              </Button>
+            </a>
           </Stack>
         </Box>
         <Box
