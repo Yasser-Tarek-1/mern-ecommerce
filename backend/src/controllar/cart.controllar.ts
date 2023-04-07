@@ -76,7 +76,7 @@ export const updateQuantity = async (
   });
   if (!checkExisted) {
     return res.status(404).send({
-      error: "This product is not existed to update it's quantity",
+      error: "This product is not existed in cart to update it's quantity",
     });
   }
 
