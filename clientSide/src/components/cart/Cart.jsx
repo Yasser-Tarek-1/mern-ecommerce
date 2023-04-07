@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Alert, Box, Stack, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,7 +12,7 @@ import { cartSvg } from "../../assets";
 import { useGetCartItemsQuery } from "../../store/rtk-query/cartApi";
 
 const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
-  const { data } = useGetCartItemsQuery();
+  const { data, isError, isSuccess } = useGetCartItemsQuery();
   const cart = data?.cartItems;
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
             alignContent="center"
             justifyContent="center"
           >
-            {cart?.length > 0 ? (
+            {cart?.length > 0 &&
               cart.map(({ product, quantity }) => {
                 return (
                   <CartItem
@@ -77,8 +77,9 @@ const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
                     quantity={quantity}
                   />
                 );
-              })
-            ) : (
+              })}
+
+            {cart?.length <= 0 && isSuccess && (
               <Stack
                 sx={{
                   p: "60px 12px",
@@ -97,6 +98,12 @@ const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
                   Go to products
                 </a>
               </Stack>
+            )}
+
+            {isError && (
+              <Alert severity="error">
+                Problem displaying Cart Item, Please try later
+              </Alert>
             )}
           </Stack>
         </Box>

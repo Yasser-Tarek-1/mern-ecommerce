@@ -8,18 +8,20 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Alert,
 } from "@mui/material";
 
 import ProductItem from "./ProductItem";
 
 import { productsData } from "../../services";
 import { useState } from "react";
+import { RotatingLines } from "react-loader-spinner";
 
 const categories = ["all", "phones", "shoes", "headphones"];
 
 const Products = () => {
   const [active, setActive] = useState("all");
-  const { data, error, isLoading } = productsData();
+  const { data, isLoading, isSuccess, isError } = productsData();
 
   const filterProducts = () => {
     // category
@@ -47,54 +49,78 @@ const Products = () => {
         >
           Products
         </Typography>
-        <>
-          <List
-            sx={{
-              width: "fit-content",
-              m: "0 auto 26px",
-              textAlign: "center",
-            }}
-          >
-            <ListItem disablePadding>
-              {categories.map((category, idx) => {
-                return (
-                  <ListItemButton
-                    key={idx}
-                    onClick={() => setActive(category)}
-                    sx={{
-                      borderRadius: "12px",
-                      padding: {
-                        xs: "4px 12px",
-                        md: "4px 24px",
-                      },
-                      transition: "all 0.5s",
-                      textAlign: "center",
-                      mx: "4px",
-                      backgroundColor: active === category && "#9c27b0",
-                      color: active === category && "#fff",
-                      "&:hover": {
-                        backgroundColor: "#9c27b0",
-                        color: "#fff",
-                      },
-                    }}
-                  >
-                    <ListItemText
+
+        {isLoading && (
+          <Stack alignItems="center">
+            <RotatingLines
+              strokeColor="#9c27b0"
+              strokeWidth="5"
+              animationDuration="0.75"
+              width="96"
+              visible={true}
+            />
+          </Stack>
+        )}
+        {isSuccess && (
+          <>
+            <List
+              sx={{
+                width: "fit-content",
+                m: "0 auto 26px",
+                textAlign: "center",
+              }}
+            >
+              <ListItem disablePadding>
+                {categories.map((category, idx) => {
+                  return (
+                    <ListItemButton
+                      key={idx}
+                      onClick={() => setActive(category)}
                       sx={{
-                        textTransform: "capitalize",
+                        borderRadius: "12px",
+                        padding: {
+                          xs: "4px 12px",
+                          md: "4px 24px",
+                        },
+                        transition: "all 0.5s",
+                        textAlign: "center",
+                        mx: "4px",
+                        backgroundColor: active === category && "#9c27b0",
+                        color: active === category && "#fff",
+                        "&:hover": {
+                          backgroundColor: "#9c27b0",
+                          color: "#fff",
+                        },
                       }}
-                      primary={category}
-                    />
-                  </ListItemButton>
-                );
+                    >
+                      <ListItemText
+                        sx={{
+                          textTransform: "capitalize",
+                        }}
+                        primary={category}
+                      />
+                    </ListItemButton>
+                  );
+                })}
+              </ListItem>
+            </List>
+            <Stack
+              direction="row"
+              flexWrap="wrap"
+              gap={5}
+              justifyContent="center"
+            >
+              {filterProducts()?.map((product) => {
+                return <ProductItem {...product} key={product._id} />;
               })}
-            </ListItem>
-          </List>
-        </>
-        <Stack direction="row" flexWrap="wrap" gap={5} justifyContent="center">
-          {filterProducts()?.map((product) => {
-            return <ProductItem {...product} key={product._id} />;
-          })}
-        </Stack>
+            </Stack>
+          </>
+        )}
+        {isError && (
+          <Alert severity="error">
+            Problem displaying products, Please try later
+          </Alert>
+        )}
       </Container>
     </Box>
   );

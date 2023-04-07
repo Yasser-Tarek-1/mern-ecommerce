@@ -7,6 +7,7 @@ import {
   TextField,
   Button,
   IconButton,
+  Alert,
 } from "@mui/material";
 import {
   useGetUserInfoQuery,
@@ -18,16 +19,18 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { toast } from "react-toastify";
+import { RotatingLines } from "react-loader-spinner";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [file, setFile] = useState("");
+  // rtk-query
   const { data, isLoading, isSuccess, isError, error } = useGetUserInfoQuery();
   const [updateUserInfo, res] = useUpdateUserInfoMutation();
   const [userImage, respone] = useUserImageMutation();
   const user = data?.res?.user;
 
-  console.log(res); // error response
+  // console.log(res); // error response
 
   useEffect(() => {
     if (res.isError || respone.isError) {
@@ -67,8 +70,17 @@ const Profile = () => {
       }}
       gap={5}
     >
-      {isError && <Typography>{error}</Typography>}
-      {isLoading && <Typography>Loading...</Typography>}
+      {isLoading && (
+        <Stack alignItems="center" mt={20}>
+          <RotatingLines
+            strokeColor="#9c27b0"
+            strokeWidth="5"
+            animationDuration="0.75"
+            width="96"
+            visible={true}
+          />
+        </Stack>
+      )}
       {isSuccess && Object.keys(user).length > 0 && (
         <Formik
           initialValues={{
@@ -255,6 +267,11 @@ const Profile = () => {
             </form>
           )}
         </Formik>
+      )}
+      {isError && (
+        <Alert severity="error">
+          Problem displaying User Info, Please try later
+        </Alert>
       )}
     </Stack>
   );
