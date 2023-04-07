@@ -17,21 +17,22 @@ export const getCartItems = async (
   });
 };
 export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
-  // const product = await Product.findById(req.body.product);
-  // if (!product || !user) {
-  //   return res.status(400).send({
-  //     error: "Your request failed!",
-  //   });
-  // }
-  // const checkingExisted = await Cart.findOne({
-  //   "product._id": req.body.product,
-  //   "user._id": req.user,
-  // });
-  // if (checkingExisted) {
-  //   return res.status(400).send({
-  //     error: "Product already in cart!",
-  //   });
-  // }
+  const product = await Product.findById(req.body.product);
+
+  if (!product) {
+    return res.status(400).send({
+      error: "Sorry!..this product is unkown",
+    });
+  }
+  const checkingExisted = await Cart.findOne({
+    product: req.body.product,
+    user: req.user._id,
+  });
+  if (checkingExisted) {
+    return res.status(400).send({
+      error: "Product already in cart!",
+    });
+  }
   const newOrder = new Cart({
     product: req.body.product,
     quantity: req.body.quantity,
@@ -46,9 +47,8 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
 
 export const removeOrder = async (req: AuthenticatedRequest, res: Response) => {
   const checkExisted = await Cart.findOne({
-    _id: req.params.id,
-    // "user.email": req.user.email,
-    // "product._id": req.params.id,
+    user: req.user._id,
+    product: req.params.id,
   });
   if (!checkExisted) {
     return res.status(400).send({
@@ -56,9 +56,8 @@ export const removeOrder = async (req: AuthenticatedRequest, res: Response) => {
     });
   }
   await Cart.findOneAndRemove({
-    // "user.email": req.user.email,
-    // "product._id": req.params.id,
-    _id: req.params.id,
+    user: req.user._id,
+    product: req.params.id,
   });
   res.status(200).send({
     success: true,
@@ -72,30 +71,24 @@ export const updateQuantity = async (
 ) => {
   const product: any = await Product.findById(req.params.id);
   const checkExisted = await Cart.findOne({
-    "user.email": req.user.email,
-    "product._id": req.params.id,
+    user: req.user._id,
+    product: req.params.id,
   });
   if (!checkExisted) {
     return res.status(404).send({
-      error: "Product is not existed to update it's quantity",
+      error: "This product is not existed to update it's quantity",
     });
   }
 
   await Cart.findOneAndUpdate(
     {
-      "product._id": req.params.id,
-      "user.email": req.user.email,
+      product: req.params.id,
+      user: req.user._id,
     },
     {
-      user: req.user,
-      product: {
-        _id: product._id,
-        title: product.title,
-        image: product.image,
-        description: product.description,
-        price: product.price,
-        quantity: req.body.quantity,
-      },
+      user: req.user._id,
+      product: req.params.product,
+      quantity: req.body.quantity,
     },
     { new: true }
   );
