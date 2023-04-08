@@ -1,13 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800&display=swap");
 
-/*
-  xs, extra-small: 0px
-  sm, small: 600px
-  md, medium: 900px
-  lg, large: 1200px
-  xl, extra-large: 1536px
-*/
-
 * {
   margin: 0;
   padding: 0;
@@ -27,8 +19,4 @@ body {
   overflow: hidden;
   position: absolute;
   z-index: -1;
-}
-
-.bg-sec {
-  background-image: url("./assets/sec.jpg") !important;
 }

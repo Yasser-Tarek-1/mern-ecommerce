@@ -8,8 +8,20 @@ import DrawerLayout from "../../layout/DrawerLayout";
 import FavoriteItem from "./FavoriteItem";
 
 import { heartSvg } from "../../assets";
+import { useGetFavoritesQuery } from "../../store/rtk-query/favoriteApi";
+import { useEffect } from "react";
 
 const Favorite = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
+  const { data, isError, isSuccess } = useGetFavoritesQuery();
+
+  const favourites = data?.res?.favourites;
+
+  useEffect(() => {
+    onSetCartAndFavoriteLength((prev) => {
+      return { ...prev, favorite: favourites?.length };
+    });
+  }, [favourites]);
+
   return (
     <DrawerLayout open={show} setOpen={onSetShow}>
       <Stack justifyContent="space-between" sx={{ minHeight: "100vh" }}>
@@ -18,7 +30,7 @@ const Favorite = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            gap={6}
+            gap={12}
             p="12px 12px"
           >
             <Typography
@@ -40,8 +52,8 @@ const Favorite = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
             alignContent="center"
             justifyContent="center"
           >
-            {[].length > 0 ? (
-              [].map(({ product }) => {
+            {favourites?.length > 0 ? (
+              favourites.map(({ product }) => {
                 return (
                   <FavoriteItem
                     onSetShow={onSetShow}

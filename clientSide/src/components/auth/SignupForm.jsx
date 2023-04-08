@@ -20,9 +20,7 @@ import { useUserImageMutation } from "../../store/rtk-query/userInfoApi";
 const SignupForm = () => {
   const dispatch = useDispatch();
   const [file, setFile] = useState("");
-  const [userImage, response] = useUserImageMutation();
-
-  console.log(response); // image uploads but response get error
+  const [userImage] = useUserImageMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -30,7 +28,7 @@ const SignupForm = () => {
       email: "",
       password: "",
       phone: "",
-      image: "",
+      image: "q",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Username is Required"),

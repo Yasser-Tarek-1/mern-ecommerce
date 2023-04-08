@@ -8,6 +8,9 @@ import {
   Button,
   IconButton,
   Alert,
+  Dialog,
+  DialogActions,
+  DialogTitle,
 } from "@mui/material";
 import {
   useGetUserInfoQuery,
@@ -24,13 +27,21 @@ import { RotatingLines } from "react-loader-spinner";
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [file, setFile] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   // rtk-query
   const { data, isLoading, isSuccess, isError, error } = useGetUserInfoQuery();
   const [updateUserInfo, res] = useUpdateUserInfoMutation();
   const [userImage, respone] = useUserImageMutation();
   const user = data?.res?.user;
-
-  // console.log(res); // error response
 
   useEffect(() => {
     if (res.isError || respone.isError) {
@@ -42,12 +53,13 @@ const Profile = () => {
       }
       setEdit(true);
     }
-    if (res.isSuccess && (!respone.isSuccess || respone.isUninitialized)) {
-      // change this when the response work
+    if (res.isSuccess && (respone.isSuccess || respone.isUninitialized)) {
       toast.success(res.data.message);
       setEdit(false);
     }
   }, [res.isError, res.isSuccess, respone.isSuccess, respone.isError]);
+
+  const deleteAcc = () => {};
 
   const validationSchema = Yup.object({
     username: Yup.string().required("Username is Required"),
@@ -247,11 +259,39 @@ const Profile = () => {
                   mt={2}
                   direction="row"
                   alignItems="center"
-                  justifyContent="space-between"
+                  justifyContent="end"
                 >
-                  <Button type="button" variant="contained" color="error">
+                  {/* <Button
+                    onClick={handleClickOpen}
+                    type="button"
+                    variant="contained"
+                    color="error"
+                  >
                     Delete Acc
-                  </Button>
+                  </Button> */}
+                  {/* backdrop */}
+                  <Dialog
+                    open={open}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                  >
+                    <DialogTitle>
+                      Are you sure you want to delete your account?
+                    </DialogTitle>
+                    <DialogActions>
+                      <Button
+                        type="button"
+                        color="secondary"
+                        onClick={handleClose}
+                      >
+                        Close
+                      </Button>
+                      <Button onClick={deleteAcc} color="error" type="button">
+                        Delete
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                   {!edit && (
                     <Button
                       type="button"

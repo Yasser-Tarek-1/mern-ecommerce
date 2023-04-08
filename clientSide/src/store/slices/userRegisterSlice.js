@@ -33,6 +33,11 @@ const initialState = {
 export const userRegisterSlice = createSlice({
   name: "userRegister",
   initialState,
+  reducers: {
+    successDone: (state) => {
+      state.success = null;
+    },
+  },
   extraReducers: {
     [register.pending]: (state) => {
       state.isLoading = true;
@@ -51,3 +56,4 @@ export const userRegisterSlice = createSlice({
 });
 
 export default userRegisterSlice.reducer;
+export const { successDone } = userRegisterSlice.actions;

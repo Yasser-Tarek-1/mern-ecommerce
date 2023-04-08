@@ -45,7 +45,7 @@ const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            gap={6}
+            gap={12}
             p="12px 12px"
           >
             <Typography

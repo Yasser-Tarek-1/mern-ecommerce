@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 import Search from "./components/search/Search";
 import Favorite from "./components/favorite/Favorite";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -21,11 +21,12 @@ const Root = () => {
   const [showCart, setShowCart] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showFavorite, setShowFavorite] = useState(false);
-
   const [cartAndFavoriteLength, setCartAndFavoriteLength] = useState({
     cart: 0,
     favorite: 0,
   });
+  const userToken = localStorage.getItem("userToken");
+  const { token } = useSelector((state) => state.login);
 
   const dispatch = useDispatch();
 
@@ -77,7 +78,7 @@ const Root = () => {
       <Header />
       <Outlet />
       <Footer />
-      {localStorage.getItem("userToken") && (
+      {token && userToken && (
         <SpeedDial
           onClick={() => setOpen(!open)}
           open={open}

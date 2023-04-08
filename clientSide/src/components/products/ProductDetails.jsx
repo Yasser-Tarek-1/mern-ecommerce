@@ -11,6 +11,7 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useAddCartItemMutation } from "../../store/rtk-query/cartApi";
+import { useAddToFavoritesMutation } from "../../store/rtk-query/favoriteApi";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -21,20 +22,36 @@ const ProductDetails = ({ _id, image, title, price, description }) => {
   const [addCartItem, { error, isError, data, isSuccess }] =
     useAddCartItemMutation();
 
+  const [addToFavorites, response] = useAddToFavoritesMutation();
+
   useEffect(() => {
     if (isError) {
       toast.error(error.data.error);
     }
     if (isSuccess) {
       toast.success(data.message);
+      setQuantity(1);
     }
   }, [isError, isSuccess]);
+
+  useEffect(() => {
+    if (response.isError) {
+      toast.error(response.error.data.error);
+    }
+    if (response.isSuccess) {
+      toast.success(response.data.message);
+    }
+  }, [response]);
 
   const addHandler = async () => {
     await addCartItem({
       product: _id,
       quantity,
     });
+  };
+
+  const addFavHandler = () => {
+    addToFavorites(_id);
   };
 
   return (
@@ -74,7 +91,7 @@ const ProductDetails = ({ _id, image, title, price, description }) => {
             {title}
           </Typography>
           <Tooltip title="Add to favorite">
-            <IconButton>
+            <IconButton onClick={addFavHandler}>
               <FavoriteIcon
                 sx={{
                   color: "red",
