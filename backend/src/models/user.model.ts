@@ -3,17 +3,17 @@ import joi from "joi";
 export interface UserI {
   _id: Schema.Types.ObjectId;
   email: string;
-  password: string;
+  password?: string;
   username: string;
   phone: string;
-  image: string;
+  image?: string;
   role: string;
   createAt: Date;
 }
 export const validateUserFields = (payload: UserI) => {
   let userSch = joi.object({
     email: joi.string().email().required(),
-    password: joi.string().required(),
+    password: joi.string().min(6).required(),
     username: joi.string().required(),
     phone: joi.string().required(),
     image: joi.string(),
@@ -39,7 +39,6 @@ const userSchema = new Schema<UserI>({
   },
   password: {
     type: String,
-    required: true,
   },
   username: {
     type: String,
