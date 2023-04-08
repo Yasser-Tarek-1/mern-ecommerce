@@ -68,19 +68,19 @@ export const updateProfile = async (
   res: Response
 ) => {
   const { error } = validateUpdateUser(req.body);
-
   if (error) {
     return res.status(400).send({ error: error.details[0].message });
   }
-  // const checkExistedEmail = await User.findOne({
-  //   email: { $ne: req.user.email },
-  // });
-  // if (checkExistedEmail) {
-  //   return res.status(400).send({
-  //     error: "email is used before..elnuby",
-  //   });
-  // }
-
+  if (req.user.email !== req.body.email) {
+    const checkExistedEmail = await User.findOne({
+      email: { $ne: req.user.email },
+    });
+    if (checkExistedEmail) {
+      return res.status(400).send({
+        error: "email is used before..elnuby",
+      });
+    }
+  }
   let user = await User.findByIdAndUpdate(
     req.user._id,
     {
@@ -93,6 +93,6 @@ export const updateProfile = async (
   );
   res.status(200).send({
     success: true,
-    message: "You information has been updated",
+    message: "Your information has been updated",
   });
 };
