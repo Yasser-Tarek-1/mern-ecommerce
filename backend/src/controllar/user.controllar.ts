@@ -77,7 +77,7 @@ export const updateProfile = async (
     });
     if (checkExistedEmail) {
       return res.status(400).send({
-        error: "email is used before..elnuby",
+        error: "email is used before",
       });
     }
   }
