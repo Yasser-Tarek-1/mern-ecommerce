@@ -2,31 +2,31 @@ import { Response } from "express";
 import { AuthenticatedRequest } from "../middleware/auth";
 import { Cart, CartI } from "../models/cart.model";
 import Product from "../models/Products.model";
-import { User } from "../models/user.model";
+
 export const getCartItems = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
   const cartItems: CartI[] | any = await Cart.find({
-    "user.email": req.user.email,
-  });
+    user: req.user,
+  }).populate("user product");
   res.status(200).send({
     success: true,
-    message: "fetched your cart item successfully",
+    message: "Cart items are fetched successfully",
     cartItems,
   });
 };
 export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
   const product = await Product.findById(req.body.product);
-  const user = await User.findById(req.user._id);
-  if (!product || !user) {
+
+  if (!product) {
     return res.status(400).send({
-      error: "Your request failed!",
+      error: "Sorry!..this product is unkown",
     });
   }
   const checkingExisted = await Cart.findOne({
-    "product.title": product.title,
-    "user.email": user.email,
+    product: req.body.product,
+    user: req.user._id,
   });
   if (checkingExisted) {
     return res.status(400).send({
@@ -34,15 +34,9 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
     });
   }
   const newOrder = new Cart({
-    product: {
-      _id: product._id,
-      title: product.title,
-      image: product.image,
-      description: product.description,
-      price: product.price,
-      quantity: req.body.quantity,
-    },
-    user,
+    product: req.body.product,
+    quantity: req.body.quantity,
+    user: req.user._id,
   });
   newOrder.save();
   res.status(200).send({
@@ -53,8 +47,8 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
 
 export const removeOrder = async (req: AuthenticatedRequest, res: Response) => { 
   const checkExisted = await Cart.findOne({
-    "user.email": req.user.email,
-    "product._id": req.params.id,
+    user: req.user._id,
+    product: req.params.id,
   });
   if (!checkExisted) {
     return res.status(400).send({
@@ -62,8 +56,8 @@ export const removeOrder = async (req: AuthenticatedRequest, res: Response) => {
     });
   }
   await Cart.findOneAndRemove({
-    "user.email": req.user.email,
-    "product._id": req.params.id,
+    user: req.user._id,
+    product: req.params.id,
   });
   res.status(200).send({
     success: true,
@@ -77,30 +71,24 @@ export const updateQuantity = async (
 ) => {
   const product: any = await Product.findById(req.params.id);
   const checkExisted = await Cart.findOne({
-    "user.email": req.user.email,
-    "product._id": req.params.id,
+    user: req.user._id,
+    product: req.params.id,
   });
   if (!checkExisted) {
     return res.status(404).send({
-      error: "Product is not existed to update it's quantity",
+      error: "This product is not existed in cart to update it's quantity",
     });
   }
 
   await Cart.findOneAndUpdate(
     {
-      "product._id": req.params.id,
-      "user.email": req.user.email,
+      product: req.params.id,
+      user: req.user._id,
     },
     {
-      user: req.user,
-      product: {
-        _id: product._id,
-        title: product.title,
-        image: product.image,
-        description: product.description,
-        price: product.price,
-        quantity: req.body.quantity,
-      },
+      user: req.user._id,
+      product: req.params.product,
+      quantity: req.body.quantity,
     },
     { new: true }
   );

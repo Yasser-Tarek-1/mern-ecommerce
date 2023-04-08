@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import Product from "../models/Products.model";
 export const getAllProducts = async (req: Request, res: Response) => {
-  let filterCategories = { category: req.query.category };
-  !req.query.category && delete filterCategories.category;
-  const products = await Product.find(filterCategories);
+  let { category: queryCategory } = req.query;
+  const filter = {
+    category: queryCategory,
+  };
+  !queryCategory && delete filter.category;
+  const products = await Product.find(filter);
   if (!products[0]) {
     return res.status(400).send({
       error: "No products found",
@@ -11,7 +14,9 @@ export const getAllProducts = async (req: Request, res: Response) => {
   }
   res.status(200).send({
     success: true,
-    message: "products are fetched successfully",
+    message: queryCategory
+      ? `Products are fetched and filtered by ${queryCategory} category`
+      : "All products are fetched successfully",
     products,
   });
 };

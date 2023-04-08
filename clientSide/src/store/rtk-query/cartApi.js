@@ -18,22 +18,24 @@ export const cartApi = createApi({
     }),
     addCartItem: builder.mutation({
       query: (payload) => ({
-        url: `/onlineStore/cart/order`,
+        url: `/onlineStore/cart/order/add`,
         method: "POST",
         body: payload,
-        header: {
-          Authentication: localStorage.getItem("userToken"),
-        },
       }),
       invalidatesTags: ["Cart"],
     }),
     removeCartItem: builder.mutation({
       query: (id) => ({
-        url: `/onlineStore/cart/remove/${id}`,
+        url: `/onlineStore/cart/order/remove/${id}`,
         method: "DELETE",
-        header: {
-          Authentication: localStorage.getItem("userToken"),
-        },
+      }),
+      invalidatesTags: ["Cart"],
+    }),
+    updateCartItemQuantity: builder.mutation({
+      query: ({ id, quantity }) => ({
+        url: `/onlineStore/cart/order/updateQty/${id}`,
+        method: "POST",
+        body: { quantity },
       }),
       invalidatesTags: ["Cart"],
     }),
@@ -44,4 +46,5 @@ export const {
   useGetCartItemsQuery,
   useAddCartItemMutation,
   useRemoveCartItemMutation,
+  useUpdateCartItemQuantityMutation,
 } = cartApi;

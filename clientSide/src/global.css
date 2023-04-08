@@ -1,14 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800&display=swap");
-
-/*
-  xs, extra-small: 0px
-  sm, small: 600px
-  md, medium: 900px
-  lg, large: 1200px
-  xl, extra-large: 1536px
-*/
 
 * {
   margin: 0;
@@ -18,13 +8,15 @@
 }
 
 body {
-  /* font-family: "Cabin", sans-serif; */
-  /* font-family: "Josefin Sans", sans-serif; */
   font-family: "Urbanist", sans-serif;
   font-weight: 400;
 }
 
-.link-hover:hover {
-  color: #9c27b0 !important;
-  transition: all 0.2s;
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }

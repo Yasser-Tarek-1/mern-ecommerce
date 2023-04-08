@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { User, validateUserFields } from "../models/user.model";
+import {
+  User,
+  validateUpdateUser,
+  validateUserFields,
+} from "../models/user.model";
 import { hashSync, compareSync } from "bcrypt";
 import { AuthenticatedRequest } from "../middleware/auth";
 import jwt from "jsonwebtoken";
@@ -12,7 +16,7 @@ export const registerUser = async (req: Request, res: Response) => {
   if (checkExistedEmail) {
     return res.status(400).send({ error: "Email is used before..." });
   }
-  const newUser = await new User({
+  const newUser = new User({
     ...req.body,
     password: hashSync(req.body.password, 10),
   });
@@ -62,19 +66,17 @@ export const updateProfile = async (
   req: AuthenticatedRequest,
   res: Response
 ) => {
-  const { error } = validateUserFields(req.body);
+  const { error } = validateUpdateUser(req.body);
+  const checkExistedEmail = await User.findOne({ email: req.body.email });
   if (error) {
     return res.status(400).send({ error: error.details[0].message });
   }
-
-  let user = await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      ...req.body,
-      password: hashSync(req.body.password, 10),
-    },
-    { new: true }
-  );
+  if (checkExistedEmail) {
+    return res.status(400).send({ error: "Email is already used.." });
+  }
+  let user = await User.findByIdAndUpdate(req.user._id, req.body, {
+    new: true,
+  });
   res.status(200).send({
     success: true,
     message: "You information has been updated",

@@ -1,21 +1,34 @@
 import React from "react";
-import { Box, Typography, TextField, Stack, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Stack,
+  Button,
+  Avatar,
+  IconButton,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { register } from "../store/slices/userRegisterSlice";
+import { register } from "../../store/slices/userRegisterSlice";
+import { useState } from "react";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { useUserImageMutation } from "../../store/rtk-query/userInfoApi";
 
 const SignupForm = () => {
   const dispatch = useDispatch();
+  const [file, setFile] = useState("");
+  const [userImage] = useUserImageMutation();
 
   const formik = useFormik({
     initialValues: {
       username: "",
       email: "",
       password: "",
-      phone: "remove this",
-      image: "remove this",
+      phone: "",
+      image: "q",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Username is Required"),
@@ -25,8 +38,14 @@ const SignupForm = () => {
       password: Yup.string()
         .required("No password provided.")
         .min(6, "Password is too short."),
+      phone: Yup.string().required("No phone provided."),
     }),
     onSubmit: (values) => {
+      if (file) {
+        const formData = new FormData();
+        formData.append("image", file);
+        userImage(formData);
+      }
       dispatch(register(values));
     },
   });
@@ -67,10 +86,38 @@ const SignupForm = () => {
         </Typography>
       </Link>
       <form
+        encType="multipart/form-data"
         onSubmit={formik.handleSubmit}
         style={{ maxWidth: "300px", margin: "0 auto" }}
       >
         <Stack width="100%" gap={5} mt="45px">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "end",
+            }}
+          >
+            <Avatar
+              src={(file && URL.createObjectURL(file)) || ""}
+              sx={{ width: "120px", height: "120px", boxShadow: 2 }}
+            />
+            <input
+              type="file"
+              name="image"
+              id="image"
+              className="inputfile"
+              onChange={(e) => {
+                const fileImage = e.target.files[0];
+                setFile(fileImage);
+                formik.setValues({ ...formik.values, image: fileImage.name });
+              }}
+            />
+
+            <label htmlFor="image" style={{ cursor: "pointer" }}>
+              <CameraAltIcon color="secondary" />
+            </label>
+          </Box>
           <TextField
             label="Username"
             variant="standard"
@@ -81,6 +128,17 @@ const SignupForm = () => {
             value={formik.values.username}
             error={formik.touched.username && Boolean(formik.errors.username)}
             helperText={formik.touched.username && formik.errors.username}
+          />
+          <TextField
+            label="Phone"
+            variant="standard"
+            color="secondary"
+            type="string"
+            name="phone"
+            onChange={formik.handleChange}
+            value={formik.values.phone}
+            error={formik.touched.phone && Boolean(formik.errors.phone)}
+            helperText={formik.touched.phone && formik.errors.phone}
           />
           <TextField
             label="Email"
