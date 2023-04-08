@@ -7,6 +7,7 @@ export interface UserI {
   username: string;
   phone: string;
   image: string;
+  role: string;
   createAt: Date;
 }
 export const validateUserFields = (payload: UserI) => {
@@ -38,6 +39,7 @@ const userSchema = new Schema<UserI>({
   },
   password: {
     type: String,
+    required: true,
   },
   username: {
     type: String,
@@ -49,6 +51,10 @@ const userSchema = new Schema<UserI>({
   },
   image: {
     type: String,
+  },
+  role: {
+    type: String,
+    required: true,
   },
   createAt: {
     type: Date,

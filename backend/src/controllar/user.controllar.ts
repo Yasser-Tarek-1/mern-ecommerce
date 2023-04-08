@@ -19,6 +19,7 @@ export const registerUser = async (req: Request, res: Response) => {
   const newUser = new User({
     ...req.body,
     password: hashSync(req.body.password, 10),
+    role: "user",
   });
   newUser.save();
   res.status(200).send({
@@ -67,16 +68,17 @@ export const updateProfile = async (
   res: Response
 ) => {
   const { error } = validateUpdateUser(req.body);
-  const checkExistedEmail = await User.findOne({ email: req.body.email });
+
   if (error) {
     return res.status(400).send({ error: error.details[0].message });
   }
-  if (checkExistedEmail) {
-    return res.status(400).send({ error: "Email is already used.." });
-  }
-  let user = await User.findByIdAndUpdate(req.user._id, req.body, {
-    new: true,
-  });
+  let user = await User.findByIdAndUpdate(
+    req.user._id,
+    { ...req.body },
+    {
+      new: true,
+    }
+  );
   res.status(200).send({
     success: true,
     message: "You information has been updated",
