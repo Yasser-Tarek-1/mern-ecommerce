@@ -9,7 +9,7 @@ import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 
 import { cartSvg } from "../../assets";
-import { useGetCartItemsQuery } from "../../store/rtk-query/cartApi";
+import { useGetCartItemsQuery } from "../../store/querys/cartApi";
 
 const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
   const { data, isError, isSuccess } = useGetCartItemsQuery();

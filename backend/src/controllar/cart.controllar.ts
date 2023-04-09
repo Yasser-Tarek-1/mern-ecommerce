@@ -61,7 +61,7 @@ export const removeOrder = async (req: AuthenticatedRequest, res: Response) => {
   });
   res.status(200).send({
     success: true,
-    messaage: "Deleted successfully",
+    message: "Deleted successfully",
   });
 };
 

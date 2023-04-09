@@ -6,21 +6,20 @@ import {
   Stack,
   Button,
   Avatar,
-  IconButton,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { register } from "../../store/slices/userRegisterSlice";
 import { useState } from "react";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import { useUserImageMutation } from "../../store/rtk-query/userInfoApi";
+import { useUserImageMutation } from "../../store/querys/userInfoApi";
+import { useRegisterHandlerMutation } from "../../store/querys/authApi";
+import { toast } from "react-toastify";
 
 const SignupForm = () => {
-  const dispatch = useDispatch();
   const [file, setFile] = useState("");
   const [userImage] = useUserImageMutation();
+  const [registerHandler] = useRegisterHandlerMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -28,7 +27,7 @@ const SignupForm = () => {
       email: "",
       password: "",
       phone: "",
-      image: "q",
+      image: "qq.png",
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Username is Required"),
@@ -46,7 +45,15 @@ const SignupForm = () => {
         formData.append("image", file);
         userImage(formData);
       }
-      dispatch(register(values));
+      registerHandler(values)
+        .unwrap()
+        .then(({ resala }) => {
+          toast.success(resala);
+          navigate("/login");
+        })
+        .catch(({ data }) => {
+          toast.error(data?.message);
+        });
     },
   });
 

@@ -5,8 +5,12 @@ export const userInfoApi = createApi({
   reducerPath: "userInfoApi",
   baseQuery: fetchBaseQuery({
     baseUrl,
-    prepareHeaders: (headers) => {
-      headers.set("Authentication", localStorage.userToken);
+    // credentials: "include",
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().user.token;
+      if (token) {
+        headers.set("Authentication", token);
+      }
       return headers;
     },
   }),

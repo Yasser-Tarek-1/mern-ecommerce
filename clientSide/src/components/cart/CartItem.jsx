@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Stack,
   Typography,
@@ -13,25 +13,22 @@ import { toast } from "react-toastify";
 import {
   useRemoveCartItemMutation,
   useUpdateCartItemQuantityMutation,
-} from "../../store/rtk-query/cartApi";
+} from "../../store/querys/cartApi";
 
 const CartItem = ({ title, quantity, price, image, _id }) => {
-  const [removeCartItem, { error, isError, data, isSuccess }] =
-    useRemoveCartItemMutation();
+  const [removeCartItem] = useRemoveCartItemMutation();
 
   const [updateCartItemQuantity] = useUpdateCartItemQuantityMutation();
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(error.data.error);
-    }
-    if (isSuccess) {
-      toast.success(data.message);
-    }
-  }, [isError, isSuccess]);
-
   const deleteHandler = () => {
-    removeCartItem(_id);
+    removeCartItem(_id)
+      .unwrap()
+      .then(({ message }) => {
+        toast.success(message);
+      })
+      .catch(({ data }) => {
+        toast.error(data.error);
+      });
   };
 
   const updateQuantity = (type) => {

@@ -4,22 +4,19 @@ import { Stack, Typography, IconButton, Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { useRemoveFromFavoritesMutation } from "../../store/rtk-query/favoriteApi";
+import { useRemoveFromFavoritesMutation } from "../../store/querys/favoriteApi";
 const FavoriteItem = ({ title, price, image, description, _id, onSetShow }) => {
-  const [removeFromFavorites, { isError, isSuccess, error, data }] =
-    useRemoveFromFavoritesMutation();
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(error.data.error);
-    }
-    if (isSuccess) {
-      toast.success(data.message);
-    }
-  }, [isError, isSuccess]);
+  const [removeFromFavorites] = useRemoveFromFavoritesMutation();
 
   const deleteHandler = () => {
-    removeFromFavorites(_id);
+    removeFromFavorites(_id)
+      .unwrap()
+      .then(({ message }) => {
+        toast.success(message);
+      })
+      .catch(({ data }) => {
+        toast.error(data.error);
+      });
   };
 
   return (

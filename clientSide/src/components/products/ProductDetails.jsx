@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useAddCartItemMutation } from "../../store/rtk-query/cartApi";
-import { useAddToFavoritesMutation } from "../../store/rtk-query/favoriteApi";
+import { useAddCartItemMutation } from "../../store/querys/cartApi";
+import { useAddToFavoritesMutation } from "../../store/querys/favoriteApi";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -19,39 +19,32 @@ import { Link } from "react-router-dom";
 const ProductDetails = ({ _id, image, title, price, description }) => {
   const [quantity, setQuantity] = useState(1);
 
-  const [addCartItem, { error, isError, data, isSuccess }] =
-    useAddCartItemMutation();
+  const [addCartItem] = useAddCartItemMutation();
+  const [addToFavorites] = useAddToFavoritesMutation();
 
-  const [addToFavorites, response] = useAddToFavoritesMutation();
-
-  useEffect(() => {
-    if (isError) {
-      toast.error(error.data.error);
-    }
-    if (isSuccess) {
-      toast.success(data.message);
-      setQuantity(1);
-    }
-  }, [isError, isSuccess]);
-
-  useEffect(() => {
-    if (response.isError) {
-      toast.error(response.error.data.error);
-    }
-    if (response.isSuccess) {
-      toast.success(response.data.message);
-    }
-  }, [response]);
-
-  const addHandler = async () => {
-    await addCartItem({
+  const addHandler = () => {
+    addCartItem({
       product: _id,
       quantity,
-    });
+    })
+      .unwrap()
+      .then(({ message }) => {
+        toast.success(message);
+      })
+      .catch(({ data }) => {
+        toast.error(data.error);
+      });
   };
 
   const addFavHandler = () => {
-    addToFavorites(_id);
+    addToFavorites(_id)
+      .unwrap()
+      .then(({ message }) => {
+        toast.success(message);
+      })
+      .catch(({ data }) => {
+        toast.error(data.error);
+      });
   };
 
   return (

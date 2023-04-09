@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { purple } from "@mui/material/colors";
 import { Link } from "react-router-dom";
-const primary = purple[500]; // #f44336
 
 const ErrorPage = () => {
   return (

@@ -12,9 +12,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { logOut } from "./store/slices/userLoginSlice";
 import { SpeedDial, SpeedDialAction, Badge } from "@mui/material";
 import { motion } from "framer-motion";
+import { logOut } from "./store/slices/userSlice";
 
 const Root = () => {
   const [open, setOpen] = useState(false);
@@ -26,7 +26,7 @@ const Root = () => {
     favorite: 0,
   });
   const userToken = localStorage.getItem("userToken");
-  const { token } = useSelector((state) => state.login);
+  const { token } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 

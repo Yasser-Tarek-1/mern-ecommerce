@@ -1,19 +1,16 @@
 import React from "react";
 import { Box, Typography, TextField, Stack, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { login } from "../../store/slices/userLoginSlice";
 import { useDispatch } from "react-redux";
+import { useLoginHandlerMutation } from "../../store/querys/authApi";
+import { toast } from "react-toastify";
+import { logIn } from "../../store/slices/userSlice";
 
 const LoginForm = () => {
-  // const [loginHandler, result] = useLoginHandlerMutation();
-
-  // if (result?.isError) {
-  //   alert(result.error.data.error);
-  // } else if (result?.isSuccess) {
-  //   alert(result.data.message);
-  // }
+  const [loginHandler] = useLoginHandlerMutation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -29,15 +26,18 @@ const LoginForm = () => {
         .email("Invalid email address.")
         .required("No email provided."),
     }),
-    // onSubmit: () => {
-    //   loginHandler(formik.values).then(({ error, data }) => {
-    //     if (error) console.log(error.data.error);
-    //     console.log(data.res.message);
-    //     localStorage.setItem("token", data.res.token);
-    //     localStorage.setItem("userId", data.res.userId);
-    //   });
     onSubmit: (values) => {
-      dispatch(login(values));
+      loginHandler(values)
+        .unwrap()
+        .then(({ res }) => {
+          dispatch(logIn({ token: res?.token, user: null }));
+          localStorage.setItem("userToken", res?.token);
+          toast.success(res?.message);
+          navigate("/");
+        })
+        .catch(({ data }) => {
+          toast.error(data?.error);
+        });
     },
   });
 
@@ -82,7 +82,7 @@ const LoginForm = () => {
       >
         <Stack width="100%" gap={5} mt="45px">
           <TextField
-            label="Username"
+            label="Email"
             variant="standard"
             color="secondary"
             type="email"

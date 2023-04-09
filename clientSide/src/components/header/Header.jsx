@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -14,11 +14,12 @@ import HeaderIcons from "./HeaderIcons";
 
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { userInfo } from "../../services";
 
 const Header = ({}) => {
   const userToken = localStorage.getItem("userToken");
-  const { token } = useSelector((state) => state.login);
-
+  const { token } = useSelector((state) => state.user);
+  const { url } = userInfo();
   const navigate = useNavigate();
 
   return (
@@ -74,7 +75,7 @@ const Header = ({}) => {
             >
               {/* <HeaderIcons {...props} userToken={userToken} token={token} /> */}
             </Box>
-            {/* Profile    */}
+            {/* Profile*/}
             <Stack direction="row" alignItems="center">
               {userToken && token ? (
                 <Link to="/profile">
@@ -85,7 +86,11 @@ const Header = ({}) => {
                       transition={{ duration: 0.2 }}
                       sx={{ px: "2px" }}
                     >
-                      <Avatar alt="Profile" sx={{ width: 38, height: 38 }} />
+                      <Avatar
+                        alt="Profile"
+                        src={url || ""}
+                        sx={{ width: 38, height: 38 }}
+                      />
                     </IconButton>
                   </Tooltip>
                 </Link>

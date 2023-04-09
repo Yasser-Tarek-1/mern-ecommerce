@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   Stack,
   Box,
@@ -13,51 +13,27 @@ import {
   DialogTitle,
 } from "@mui/material";
 import {
-  useGetUserInfoQuery,
   useUpdateUserInfoMutation,
   useUserImageMutation,
-} from "../store/rtk-query/userInfoApi";
+} from "../store/querys/userInfoApi";
 import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { toast } from "react-toastify";
 import { RotatingLines } from "react-loader-spinner";
+import { userInfo } from "../services";
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [file, setFile] = useState("");
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [updateUserInfo] = useUpdateUserInfoMutation();
+  const [userImage] = useUserImageMutation();
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  // rtk-query
-  const { data, isLoading, isSuccess, isError, error } = useGetUserInfoQuery();
-  const [updateUserInfo, res] = useUpdateUserInfoMutation();
-  const [userImage, respone] = useUserImageMutation();
+  const { data, isLoading, isSuccess, isError, url } = userInfo();
   const user = data?.res?.user;
-
-  useEffect(() => {
-    if (res.isError || respone.isError) {
-      if (res.isError) {
-        toast.error(res.error.data.error);
-      }
-      if (respone.isError) {
-        toast.error(respone.error.data.error);
-      }
-      setEdit(true);
-    }
-    if (res.isSuccess && (respone.isSuccess || respone.isUninitialized)) {
-      toast.success(res.data.message);
-      setEdit(false);
-    }
-  }, [res.isError, res.isSuccess, respone.isSuccess, respone.isError]);
 
   const deleteAcc = () => {};
 
@@ -67,9 +43,9 @@ const Profile = () => {
       .email("Invalid email address.")
       .required("No email provided."),
     phone: Yup.string().required("No phone provided."),
-    password: Yup.string()
-      .required("No password provided.")
-      .min(6, "Password is too short."),
+    // password: Yup.string()
+    //   .required("No password provided.")
+    //   .min(6, "Password is too short."),
   });
 
   return (
@@ -98,7 +74,7 @@ const Profile = () => {
           initialValues={{
             username: user?.username,
             email: user?.email,
-            password: "123123",
+            // password: user?.password,
             phone: user?.phone,
             image: user?.image,
           }}
@@ -107,9 +83,25 @@ const Profile = () => {
             if (file) {
               const formData = new FormData();
               formData.append("image", file);
-              userImage(formData);
+              userImage(formData)
+                .unwrap()
+                .then(({ message }) => {
+                  // toast.success(message);
+                })
+                .catch(({ data }) => {
+                  // toast.error(data.error);
+                });
             }
-            updateUserInfo(values);
+            updateUserInfo(values)
+              .unwrap()
+              .then(({ message }) => {
+                toast.success(message);
+                setEdit(false);
+              })
+              .catch(({ data }) => {
+                toast.error(data.error);
+                setEdit(true);
+              });
           }}
         >
           {({
@@ -139,7 +131,7 @@ const Profile = () => {
                 }}
               >
                 <Avatar
-                  src={(file && URL.createObjectURL(file)) || user?.image}
+                  src={(file && URL.createObjectURL(file)) || url}
                   sx={{ width: "220px", height: "220px", boxShadow: 2 }}
                 />
                 <input
@@ -235,7 +227,8 @@ const Profile = () => {
                     helperText={touched.phone && errors.phone}
                   />
                 </Stack>
-                <Stack
+                {/* password */}
+                {/* <Stack
                   direction="row"
                   alignItems="center"
                   gap={3}
@@ -254,7 +247,7 @@ const Profile = () => {
                     error={touched.password && Boolean(errors.password)}
                     helperText={touched.password && errors.password}
                   />
-                </Stack>
+                </Stack> */}
                 <Stack
                   mt={2}
                   direction="row"
@@ -262,7 +255,7 @@ const Profile = () => {
                   justifyContent="end"
                 >
                   {/* <Button
-                    onClick={handleClickOpen}
+                    onClick={()=> setOpen(true)} 
                     type="button"
                     variant="contained"
                     color="error"
@@ -273,7 +266,7 @@ const Profile = () => {
                   <Dialog
                     open={open}
                     keepMounted
-                    onClose={handleClose}
+                    onClose={() => setOpen(false)}
                     aria-describedby="alert-dialog-slide-description"
                   >
                     <DialogTitle>
@@ -283,7 +276,7 @@ const Profile = () => {
                       <Button
                         type="button"
                         color="secondary"
-                        onClick={handleClose}
+                        onClick={() => setOpen(false)}
                       >
                         Close
                       </Button>
