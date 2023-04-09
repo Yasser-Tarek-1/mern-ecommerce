@@ -5,7 +5,6 @@ export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl,
-    // credentials: "include",
   }),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({

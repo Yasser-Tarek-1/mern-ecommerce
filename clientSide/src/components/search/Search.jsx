@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Input, Stack, Typography } from "@mui/material";
+import { Alert, Box, Input, Stack, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -17,12 +17,12 @@ import { RotatingLines } from "react-loader-spinner";
 const Search = ({ show, onSetShow }) => {
   const [search, setSearch] = useState("");
 
-  const { data, isLoading } = productsData();
+  const { data, isLoading, isError } = productsData();
 
   const searchHandler = () => {
     if (search) {
       if (data) {
-        return data?.products.filter((product) => {
+        return data?.products?.filter((product) => {
           return product.title.includes(search);
         });
       } else {
@@ -93,10 +93,10 @@ const Search = ({ show, onSetShow }) => {
             </Stack>
           )}
 
-          {searchHandler().length === 0 && search ? (
+          {searchHandler()?.length === 0 && search ? (
             <Typography>Not available in the store...</Typography>
           ) : (
-            searchHandler().map((item) => {
+            searchHandler()?.map((item) => {
               return (
                 <SearchItem
                   onSetShow={onSetShow}
@@ -109,6 +109,11 @@ const Search = ({ show, onSetShow }) => {
           )}
         </Stack>
       </Box>
+      {isError && search && (
+        <Alert severity="error">
+          Problem displaying products, Please try later
+        </Alert>
+      )}
     </DrawerLayout>
   );
 };

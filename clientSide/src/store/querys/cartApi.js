@@ -1,24 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "../../httpRequest";
+import { baseApi } from "./baseApi";
 
-export const cartApi = createApi({
+export const cartApi = baseApi.injectEndpoints({
   reducerPath: "cartApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-    // credentials: "include",
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().user.token;
-      if (token) {
-        headers.set("Authentication", token);
-      }
-      return headers;
-    },
-  }),
-  tagTypes: ["Cart"],
+  // tagTypes: ["Cart"],
   endpoints: (builder) => ({
     getCartItems: builder.query({
       query: () => `/onlineStore/cart`,
-      providesTags: ["Cart"],
+      providesTags: (_) => ["Cart"],
     }),
     addCartItem: builder.mutation({
       query: (payload) => ({
@@ -26,20 +14,27 @@ export const cartApi = createApi({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Cart"],
+      invalidatesTags: (_) => ["Cart"],
     }),
     removeCartItem: builder.mutation({
       query: (id) => ({
         url: `/onlineStore/cart/order/remove/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Cart"],
+      invalidatesTags: (_) => ["Cart"],
     }),
     updateCartItemQuantity: builder.mutation({
       query: ({ id, quantity }) => ({
         url: `/onlineStore/cart/order/updateQty/${id}`,
         method: "POST",
         body: { quantity },
+      }),
+      invalidatesTags: (_) => ["Cart"],
+    }),
+    deleteCartItem: builder.mutation({
+      query: () => ({
+        url: `/onlineStore/cart/orders/clear`,
+        method: "DELETE",
       }),
       invalidatesTags: ["Cart"],
     }),
@@ -51,4 +46,5 @@ export const {
   useAddCartItemMutation,
   useRemoveCartItemMutation,
   useUpdateCartItemQuantityMutation,
+  useDeleteCartItemMutation,
 } = cartApi;

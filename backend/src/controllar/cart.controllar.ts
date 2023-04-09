@@ -45,7 +45,7 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
   });
 };
 
-export const removeOrder = async (req: AuthenticatedRequest, res: Response) => { 
+export const removeOrder = async (req: AuthenticatedRequest, res: Response) => {
   const checkExisted = await Cart.findOne({
     user: req.user._id,
     product: req.params.id,
@@ -95,5 +95,18 @@ export const updateQuantity = async (
   res.status(200).send({
     success: true,
     message: "Quantity is updated",
+  });
+};
+
+export const removeAllOrders = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  await Cart.deleteMany({
+    user: req.user,
+  });
+  res.status(200).send({
+    success: true,
+    message: "Cart has been cleared successfully",
   });
 };

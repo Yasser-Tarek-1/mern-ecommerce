@@ -17,7 +17,7 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 const port = process.env.PORT || 4000;
-dotenv.config({ path: path.join(__dirname, ".env") });
+dotenv.config({ path: path.join(__dirname, "./.env") });
 app.use(`${process.env.PREFIX_ROUTE}/products`, productsRoutes);
 app.use(`${process.env.PREFIX_ROUTE}/cart`, cartRoutes);
 app.use(`${process.env.PREFIX_ROUTE}/user`, userRoutes);

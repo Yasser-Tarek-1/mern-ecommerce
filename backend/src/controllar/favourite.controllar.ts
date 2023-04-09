@@ -1,6 +1,6 @@
 import { AuthenticatedRequest } from "./../middleware/auth";
 import Product from "../models/Products.model";
-import { Favourite, FavouritesI } from "./../models/favourites.model";
+import { Favourite } from "./../models/favourites.model";
 import { Response } from "express";
 export const getFavouritesProducts = async (
   req: AuthenticatedRequest,
@@ -17,7 +17,10 @@ export const getFavouritesProducts = async (
     },
   });
 };
-export const addToFavouritesList = async (req: AuthenticatedRequest, res: Response) => {
+export const addToFavouritesList = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
   const product = await Product.findById(req.params.productId);
   const favProduct = {
     user: req.user._id,
@@ -41,7 +44,10 @@ export const addToFavouritesList = async (req: AuthenticatedRequest, res: Respon
   });
   newLike.save();
 };
-export const removeFromFavouritesList = async (req: AuthenticatedRequest, res: Response) => {
+export const removeFromFavouritesList = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
   const product = await Product.findById(req.params.productId);
   if (!product) {
     return res.status(400).send({
@@ -62,5 +68,17 @@ export const removeFromFavouritesList = async (req: AuthenticatedRequest, res: R
   res.status(200).send({
     success: true,
     message: "Product is removed from favourites list",
+  });
+};
+export const clearFavouritesList = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  await Favourite.deleteMany({
+    user: req.user,
+  });
+  res.status(200).send({
+    success: true,
+    message: "favourites list has been cleared successfully",
   });
 };

@@ -1,38 +1,26 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "../../httpRequest";
+import { baseApi } from "./baseApi";
 
-export const favoriteApi = createApi({
+export const favoriteApi = baseApi.injectEndpoints({
   reducerPath: "favoriteApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-    // credentials: "include",
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().user.token;
-      if (token) {
-        headers.set("Authentication", token);
-      }
-      return headers;
-    },
-  }),
-  tagTypes: ["Favorite"],
+  // tagTypes: ["Favorite"],
   endpoints: (builder) => ({
     getFavorites: builder.query({
       query: () => `/onlineStore/favourites`,
-      providesTags: ["Favorite"],
+      providesTags: (_) => ["Favorite"],
     }),
     addToFavorites: builder.mutation({
       query: (id) => ({
         url: `/onlineStore/favourites/add/${id}`,
         method: "POST",
       }),
-      invalidatesTags: ["Favorite"],
+      invalidatesTags: (_) => ["Favorite"],
     }),
     removeFromFavorites: builder.mutation({
       query: (id) => ({
         url: `/onlineStore/favourites/remove/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Favorite"],
+      invalidatesTags: (_) => ["Favorite"],
     }),
   }),
 });

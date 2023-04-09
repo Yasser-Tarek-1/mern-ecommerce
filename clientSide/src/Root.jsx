@@ -15,6 +15,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { SpeedDial, SpeedDialAction, Badge } from "@mui/material";
 import { motion } from "framer-motion";
 import { logOut } from "./store/slices/userSlice";
+import { baseApi } from "./store/querys/baseApi";
 
 const Root = () => {
   const [open, setOpen] = useState(false);
@@ -59,6 +60,7 @@ const Root = () => {
       dispatch(logOut());
       localStorage.clear();
       toast.success("You logout successfully");
+      dispatch(baseApi.util.resetApiState());
     }
   };
 

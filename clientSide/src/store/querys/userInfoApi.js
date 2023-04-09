@@ -1,24 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { baseUrl } from "../../httpRequest";
+import { baseApi } from "./baseApi";
 
-export const userInfoApi = createApi({
+export const userInfoApi = baseApi.injectEndpoints({
   reducerPath: "userInfoApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl,
-    // credentials: "include",
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().user.token;
-      if (token) {
-        headers.set("Authentication", token);
-      }
-      return headers;
-    },
-  }),
-  tagTypes: ["UserInfo"],
+  // tagTypes: ["UserInfo"],
   endpoints: (builder) => ({
     getUserInfo: builder.query({
       query: () => `/onlineStore/user/getMe`,
-      providesTags: ["UserInfo"],
+      providesTags: (_) => ["UserInfo"],
     }),
     updateUserInfo: builder.mutation({
       query: (body) => ({
@@ -26,7 +14,7 @@ export const userInfoApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["UserInfo"],
+      invalidatesTags: (_) => ["UserInfo"],
     }),
     userImage: builder.mutation({
       query: (body) => ({
@@ -34,7 +22,7 @@ export const userInfoApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["UserInfo"],
+      invalidatesTags: (_) => ["UserInfo"],
     }),
   }),
 });
