@@ -66,17 +66,21 @@ const Root = () => {
 
   return (
     <>
-      <Cart
-        show={showCart}
-        onSetShow={setShowCart}
-        onSetCartAndFavoriteLength={setCartAndFavoriteLength}
-      />
       <Search show={showSearch} onSetShow={setShowSearch} />
-      <Favorite
-        show={showFavorite}
-        onSetShow={setShowFavorite}
-        onSetCartAndFavoriteLength={setCartAndFavoriteLength}
-      />
+      {token && userToken && (
+        <>
+          <Cart
+            show={showCart}
+            onSetShow={setShowCart}
+            onSetCartAndFavoriteLength={setCartAndFavoriteLength}
+          />{" "}
+          <Favorite
+            show={showFavorite}
+            onSetShow={setShowFavorite}
+            onSetCartAndFavoriteLength={setCartAndFavoriteLength}
+          />
+        </>
+      )}
       <Header />
       <Outlet />
       <Footer />

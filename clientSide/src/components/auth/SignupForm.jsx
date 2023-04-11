@@ -7,7 +7,7 @@ import {
   Button,
   Avatar,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
@@ -20,6 +20,7 @@ const SignupForm = () => {
   const [file, setFile] = useState("");
   const [userImage] = useUserImageMutation();
   const [registerHandler] = useRegisterHandlerMutation();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -52,7 +53,7 @@ const SignupForm = () => {
           navigate("/login");
         })
         .catch(({ data }) => {
-          toast.error(data?.message);
+          toast.error(data.error);
         });
     },
   });
