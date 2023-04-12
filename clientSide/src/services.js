@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useGetProductsQuery } from "./store/querys/productsApi";
 import { useGetUserInfoQuery } from "./store/querys/userInfoApi";
 import { baseUrl } from "./httpRequest";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { useSelector } from "react-redux";
 
 export const productsData = (category = null) => {
   const {
@@ -16,7 +18,14 @@ export const productsData = (category = null) => {
 
 export const userInfo = () => {
   const [url, setUrl] = useState("");
-  const { data = [], isLoading, isSuccess, isError } = useGetUserInfoQuery();
+  const { token } = useSelector((state) => state.user);
+
+  const {
+    data = [],
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetUserInfoQuery(!token && skipToken);
 
   useEffect(() => {
     const getImage = async () => {

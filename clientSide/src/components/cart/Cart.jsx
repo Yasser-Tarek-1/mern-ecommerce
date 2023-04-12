@@ -12,7 +12,7 @@ import { cartSvg } from "../../assets";
 import { useGetCartItemsQuery } from "../../store/querys/cartApi";
 
 const Cart = ({ show, onSetShow, onSetCartAndFavoriteLength }) => {
-  const { data, isError, isSuccess } = useGetCartItemsQuery();
+  const { data, isError, isSuccess, error } = useGetCartItemsQuery();
   const cart = data?.cartItems;
 
   useEffect(() => {
