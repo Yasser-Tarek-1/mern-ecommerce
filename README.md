@@ -7,4 +7,4 @@
 Mern application, used React, RTK Query and Mui for UI,
 in server-side used node.js and express.
 
-if you would like to visit a live demo click [here](#).
+if you would like to visit a live demo click [here](https://mernstore.netlify.app/).
