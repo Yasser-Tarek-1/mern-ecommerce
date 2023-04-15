@@ -5,19 +5,19 @@ export const favoriteApi = baseApi.injectEndpoints({
   // tagTypes: ["Favorite"],
   endpoints: (builder) => ({
     getFavorites: builder.query({
-      query: () => `/onlineStore/favourites`,
+      query: () => `/favourites`,
       providesTags: (_) => ["Favorite"],
     }),
     addToFavorites: builder.mutation({
       query: (id) => ({
-        url: `/onlineStore/favourites/add/${id}`,
+        url: `/favourites/add/${id}`,
         method: "POST",
       }),
       invalidatesTags: (_) => ["Favorite"],
     }),
     removeFromFavorites: builder.mutation({
       query: (id) => ({
-        url: `/onlineStore/favourites/remove/${id}`,
+        url: `/favourites/remove/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: (_) => ["Favorite"],

@@ -10,7 +10,7 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     registerHandler: builder.mutation({
       query: (body) => ({
-        url: `/onlineStore/user/register`,
+        url: `/user/register`,
         method: "POST",
         body,
       }),
@@ -19,7 +19,7 @@ export const authApi = createApi({
 
     loginHandler: builder.mutation({
       query: (body) => ({
-        url: `/onlineStore/user/login`,
+        url: `/user/login`,
         method: "POST",
         body,
       }),

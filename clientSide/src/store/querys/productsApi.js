@@ -9,11 +9,11 @@ export const productsApi = createApi({
   tagTypes: ["Product"],
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: (cat) => `/onlineStore/products?category=${cat || ""}`,
+      query: (cat) => `/products?category=${cat || ""}`,
       providesTags: ["Product"],
     }),
     getProductById: builder.query({
-      query: (id) => `/onlineStore/products/${id}`,
+      query: (id) => `/products/${id}`,
       providesTags: ["Product"],
     }),
   }),

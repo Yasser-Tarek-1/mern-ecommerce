@@ -5,12 +5,12 @@ export const userInfoApi = baseApi.injectEndpoints({
   // tagTypes: ["UserInfo"],
   endpoints: (builder) => ({
     getUserInfo: builder.query({
-      query: () => `/onlineStore/user/getMe`,
+      query: () => `/user/getMe`,
       providesTags: (_) => ["UserInfo"],
     }),
     updateUserInfo: builder.mutation({
       query: (body) => ({
-        url: `/onlineStore/user/update`,
+        url: `/user/update`,
         method: "POST",
         body,
       }),
@@ -18,7 +18,7 @@ export const userInfoApi = baseApi.injectEndpoints({
     }),
     userImage: builder.mutation({
       query: (body) => ({
-        url: `/onlineStore/upload`,
+        url: `/upload`,
         method: "POST",
         body,
       }),
